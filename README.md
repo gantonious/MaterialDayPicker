@@ -16,7 +16,7 @@ repositories {
 
 ```groovy
 dependencies {
-    compile 'ca.antonious:materialdaypicker:0.5.0'
+    compile 'ca.antonious:materialdaypicker:0.1.0'
 }
 ```
 

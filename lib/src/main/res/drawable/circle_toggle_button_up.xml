@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@android:color/darker_gray" />
+            <solid android:color="@color/dayDeselected" />
             <size
                 android:width="3dp"
                 android:height="3dp" />

@@ -1,4 +1,4 @@
-package ca.antonious.materialdaypicker;
+package ca.antonious.sampleapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

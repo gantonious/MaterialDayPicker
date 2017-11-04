@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId "ca.antonious.materialdaypicker"
+        applicationId "ca.antonious.sampleapp"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    compile project(":lib")
+    implementation project(":lib")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'

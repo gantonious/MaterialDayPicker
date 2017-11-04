@@ -1,10 +1,12 @@
-package ca.antonious.materialdaypicker;
+package ca.antonious.sampleapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.List;
+
+import ca.antonious.materialdaypicker.MaterialDayPicker;
 
 public class MainActivity extends AppCompatActivity {
     @Override

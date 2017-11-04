@@ -1,4 +1,4 @@
-package ca.antonious.materialdaypicker;
+package ca.antonious.sampleapp;
 
 import org.junit.Test;
 

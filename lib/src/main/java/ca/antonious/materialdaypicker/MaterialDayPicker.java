@@ -35,6 +35,18 @@ public class MaterialDayPicker extends LinearLayout {
         handleToggleEvents();
     }
 
+    public void clearSelection() {
+        DaySelectionChangedListener tempListener = daySelectionChangedListener;
+        daySelectionChangedListener = null;
+
+        for (ToggleButton toggleButton: dayToggles) {
+            toggleButton.setChecked(false);
+        }
+
+        daySelectionChangedListener = tempListener;
+        onDaySelectionChanged();
+    }
+
     public List<Weekday> getSelectedDays() {
         List<Weekday> selectedDays = new ArrayList<>();
 
@@ -71,12 +83,16 @@ public class MaterialDayPicker extends LinearLayout {
         }
     }
 
+    private void onDaySelectionChanged() {
+        if (daySelectionChangedListener != null) {
+            daySelectionChangedListener.onDaySelectionChanged(getSelectedDays());
+        }
+    }
+
     private CompoundButton.OnCheckedChangeListener onDayToggledListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if (daySelectionChangedListener != null) {
-                daySelectionChangedListener.onDaySelectionChanged(getSelectedDays());
-            }
+            onDaySelectionChanged();
         }
     };
 

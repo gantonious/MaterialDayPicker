@@ -42,8 +42,8 @@ You can overide these three colors to change how the date picker looks:
 You can get the currently selected days by using:
 
 ```java
-List<Weekday> daysSelected = materialDayPicker.getSelectedDays();
-// returns [Weekday.TUESDAY, Weekday.FRIDAY]
+List<MaterialDayPicker.Weekday> daysSelected = materialDayPicker.getSelectedDays();
+// returns [MaterialDayPicker.Weekday.TUESDAY, MaterialDayPicker.Weekday.FRIDAY]
 ```
 
 If you want to listen to whenever the day selection is changed you can use:

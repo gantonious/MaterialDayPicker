@@ -6,14 +6,6 @@ Inspired by the day picker in the builtin Android clock app:
 
 ## Download
 
-In your project `build.gradle` file add:
-
-```groovy
-repositories {
-    maven { url 'https://dl.bintray.com/gantonious/maven/' }
-}
-```
-
 ```groovy
 dependencies {
     compile 'ca.antonious:materialdaypicker:0.1.0'

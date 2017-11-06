@@ -6,14 +6,6 @@ Inspired by the day picker in the builtin Android clock app:
 
 ## Download
 
-In your project `build.gradle` file add:
-
-```groovy
-repositories {
-    maven { url 'https://dl.bintray.com/gantonious/maven/' }
-}
-```
-
 ```groovy
 dependencies {
     compile 'ca.antonious:materialdaypicker:0.2.1'
@@ -42,8 +34,8 @@ You can overide these three colors to change how the date picker looks:
 You can get the currently selected days by using:
 
 ```java
-List<Weekday> daysSelected = materialDayPicker.getSelectedDays();
-// returns [Weekday.TUESDAY, Weekday.FRIDAY]
+List<MaterialDayPicker.Weekday> daysSelected = materialDayPicker.getSelectedDays();
+// returns [MaterialDayPicker.Weekday.TUESDAY, MaterialDayPicker.Weekday.FRIDAY]
 ```
 
 If you want to listen to whenever the day selection is changed you can use:
@@ -79,5 +71,6 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```

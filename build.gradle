@@ -19,7 +19,7 @@ buildscript {
 ext {
     userOrg = 'gantonious'
     groupId = 'ca.antonious'
-    publishVersion = '0.2.1'
+    publishVersion = '0.3.0'
     website = "https://github.com/gantonious/MaterialDayPicker"
 }
 

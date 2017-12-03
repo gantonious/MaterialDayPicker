@@ -21,5 +21,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Days Changed", Toast.LENGTH_SHORT).show();
             }
         });
+
+        materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
     }
 }

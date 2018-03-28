@@ -1,4 +1,4 @@
-# MaterialDayPicker
+# MaterialDayPicker [![CircleCI](https://circleci.com/gh/gantonious/MaterialDayPicker.svg?style=svg)](https://circleci.com/gh/gantonious/MaterialDayPicker)
 
 Inspired by the day picker in the builtin Android clock app:
 

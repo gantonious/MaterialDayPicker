@@ -70,6 +70,10 @@ public class MaterialDayPicker extends LinearLayout {
         });
     }
 
+    public boolean isSelected(Weekday weekday) {
+        return getSelectedDays().contains(weekday);
+    }
+
     public void clearSelection() {
         disableListenerWhileExecuting(new Action() {
             @Override

@@ -22,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        materialDayPicker.setDayPressedListener(new MaterialDayPicker.DayPressedListener() {
+            @Override
+            public void onDayPressed(MaterialDayPicker.Weekday weekday, boolean isSelected) {
+                String message = String.format("%s is selected: %b.", weekday.toString(), isSelected);
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
     }
 }

@@ -19,6 +19,7 @@ public class MaterialDayPicker extends LinearLayout {
     private List<ToggleButton> dayToggles = new ArrayList<>();
 
     private DaySelectionChangedListener daySelectionChangedListener;
+    private DayPressedListener dayPressedListener;
 
     public MaterialDayPicker(Context context) {
         this(context, null);
@@ -38,6 +39,10 @@ public class MaterialDayPicker extends LinearLayout {
 
     public void setDaySelectionChangedListener(DaySelectionChangedListener daySelectionChangedListener) {
         this.daySelectionChangedListener = daySelectionChangedListener;
+    }
+
+    public void setDayPressedListener(DayPressedListener dayPressedListener) {
+        this.dayPressedListener = dayPressedListener;
     }
 
     public List<Weekday> getSelectedDays() {
@@ -117,10 +122,13 @@ public class MaterialDayPicker extends LinearLayout {
     }
 
     private void handleToggleEvents() {
-        for (ToggleButton dayToggle: dayToggles) {
-            dayToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        for (int i = 0; i < dayToggles.size(); i++) {
+            final Weekday weekdayForToggle = Weekday.values()[i];
+
+            dayToggles.get(i).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    onDayPressed(weekdayForToggle);
                     onDaySelectionChanged();
                 }
             });
@@ -147,6 +155,12 @@ public class MaterialDayPicker extends LinearLayout {
         }
     }
 
+    private void onDayPressed(Weekday weekday) {
+        if (dayPressedListener != null) {
+            dayPressedListener.onDayPressed(weekday, isSelected(weekday));
+        }
+    }
+
     public enum Weekday {
         SUNDAY,
         MONDAY,
@@ -159,6 +173,10 @@ public class MaterialDayPicker extends LinearLayout {
 
     public interface DaySelectionChangedListener {
         void onDaySelectionChanged(List<Weekday> selectedDays);
+    }
+
+    public interface DayPressedListener {
+        void onDayPressed(Weekday weekday, boolean isSelected);
     }
 
     private interface Action {

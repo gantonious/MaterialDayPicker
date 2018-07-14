@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         materialDayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
             public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> selectedDays) {
-                //Toast.makeText(MainActivity.this, "Days Changed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Days Changed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDayPressed(MaterialDayPicker.Weekday weekday, boolean isSelected) {
                 String message = String.format("%s is selected: %b.", weekday.toString(), isSelected);
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
 

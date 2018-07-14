@@ -51,7 +51,7 @@ public class MaterialDayPicker extends LinearLayout {
             throw new IllegalArgumentException("SelectionMode must not be null.");
         }
         this.selectionMode = selectionMode;
-        handleChangesInAvaialbleDays();
+        handleChangesInAvailableDays();
     }
 
     public List<Weekday> getSelectedDays() {
@@ -162,18 +162,20 @@ public class MaterialDayPicker extends LinearLayout {
 
         for (Weekday dayToDeselect: selectionDifference.getDaysToDeselect()) {
             getToggleFor(dayToDeselect).setChecked(false);
+            onDayPressed(dayToDeselect, false);
         }
 
         for (Weekday dayToSelect: selectionDifference.getDaysToSelect()) {
             getToggleFor(dayToSelect).setChecked(true);
+            onDayPressed(dayToSelect, true);
         }
 
-        handleChangesInAvaialbleDays();
+        handleChangesInAvailableDays();
         listenToToggleEvents();
         onDaySelectionChanged();
     }
 
-    private void handleChangesInAvaialbleDays() {
+    private void handleChangesInAvailableDays() {
         for (ToggleButton dayToggle: dayToggles) {
             dayToggle.setEnabled(false);
         }
@@ -207,9 +209,9 @@ public class MaterialDayPicker extends LinearLayout {
         }
     }
 
-    private void onDayPressed(Weekday weekday) {
+    private void onDayPressed(Weekday weekday, boolean didGetSelected) {
         if (dayPressedListener != null) {
-            dayPressedListener.onDayPressed(weekday, isSelected(weekday));
+            dayPressedListener.onDayPressed(weekday, didGetSelected);
         }
     }
 

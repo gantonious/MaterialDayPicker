@@ -2,6 +2,8 @@ package ca.antonious.sampleapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialDayPicker materialDayPicker = findViewById(R.id.dayPicker);
+        final MaterialDayPicker materialDayPicker = findViewById(R.id.dayPicker);
         materialDayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
             public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> selectedDays) {
@@ -31,7 +33,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //materialDayPicker.setSelectionMode(new SingleSelectionMode());
+        materialDayPicker.setSelectionMode(new SingleSelectionMode());
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
+
+        Button clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materialDayPicker.clearSelection();
+            }
+        });
     }
 }

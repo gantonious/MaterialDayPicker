@@ -4,10 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.List;
 
+import ca.antonious.materialdaypicker.DefaultSelectionMode;
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 import ca.antonious.materialdaypicker.SingleSelectionMode;
 
@@ -33,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        materialDayPicker.setSelectionMode(new SingleSelectionMode());
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
 
         Button clearButton = findViewById(R.id.clearButton);
@@ -41,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 materialDayPicker.clearSelection();
+            }
+        });
+
+        Switch singleModeSwitch = findViewById(R.id.singleModeSwitch);
+        singleModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean didGetChecked) {
+                if (didGetChecked) {
+                    materialDayPicker.setSelectionMode(new SingleSelectionMode());
+                } else {
+                    materialDayPicker.setSelectionMode(new DefaultSelectionMode());
+                }
             }
         });
     }

@@ -198,7 +198,7 @@ public class MaterialDayPicker extends LinearLayout {
         ignoreToggleEvents();
 
         for (ToggleButton dayToggle: dayToggles) {
-            dayToggle.setChecked(true);
+            dayToggle.setChecked(false);
         }
 
         listenToToggleEvents();

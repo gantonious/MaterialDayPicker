@@ -3,7 +3,6 @@ package ca.antonious.materialdaypicker;
 import java.util.List;
 
 public class DefaultSelectionMode implements SelectionMode {
-
     @Override
     public List<MaterialDayPicker.Weekday> getSelectableDays() {
         return MaterialDayPicker.Weekday.getAllDays();

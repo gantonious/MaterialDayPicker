@@ -19,8 +19,8 @@ public class MaterialDayPicker extends LinearLayout {
     private List<ToggleButton> dayToggles = new ArrayList<>();
     private SelectionMode selectionMode = new DefaultSelectionMode();
 
-    private DaySelectionChangedListener daySelectionChangedListener;
     private DayPressedListener dayPressedListener;
+    private DaySelectionChangedListener daySelectionChangedListener;
 
     public MaterialDayPicker(Context context) {
         this(context, null);
@@ -33,7 +33,7 @@ public class MaterialDayPicker extends LinearLayout {
     public MaterialDayPicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        inflateLayout(context);
+        inflateLayoutUsing(context);
         bindViews();
         listenToToggleEvents();
     }
@@ -106,7 +106,7 @@ public class MaterialDayPicker extends LinearLayout {
         });
     }
 
-    private void inflateLayout(Context context) {
+    private void inflateLayoutUsing(Context context) {
         LayoutInflater.from(context).inflate(R.layout.day_of_the_week_picker, this, true);
     }
 

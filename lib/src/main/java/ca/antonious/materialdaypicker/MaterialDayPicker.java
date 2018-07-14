@@ -45,7 +45,6 @@ public class MaterialDayPicker extends LinearLayout {
         this.selectionMode = selectionMode;
 
         clearSelectionIgnoringSelectionMode();
-        updateSelectableDays();
     }
 
     public void setDayPressedListener(DayPressedListener dayPressedListener) {
@@ -179,19 +178,8 @@ public class MaterialDayPicker extends LinearLayout {
             onDayPressed(dayToSelect, true);
         }
 
-        updateSelectableDays();
         listenToToggleEvents();
         onDaySelectionChanged();
-    }
-
-    private void updateSelectableDays() {
-        for (ToggleButton dayToggle: dayToggles) {
-            dayToggle.setEnabled(false);
-        }
-
-        for (Weekday day: selectionMode.getSelectableDays()) {
-            getToggleFor(day).setEnabled(true);
-        }
     }
 
     private void clearSelectionIgnoringSelectionMode() {

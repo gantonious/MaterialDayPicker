@@ -1,16 +1,9 @@
 package ca.antonious.materialdaypicker;
 
-import java.util.List;
-
 public class DefaultSelectionMode implements SelectionMode {
 
     public static SelectionMode create() {
         return new DefaultSelectionMode();
-    }
-
-    @Override
-    public List<MaterialDayPicker.Weekday> getSelectableDays() {
-        return MaterialDayPicker.Weekday.getAllDays();
     }
 
     @Override

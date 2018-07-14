@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean didGetChecked) {
                 if (didGetChecked) {
-                    materialDayPicker.setSelectionMode(new SingleSelectionMode());
+                    materialDayPicker.setSelectionMode(SingleSelectionMode.create());
                 } else {
-                    materialDayPicker.setSelectionMode(new DefaultSelectionMode());
+                    materialDayPicker.setSelectionMode(DefaultSelectionMode.create());
                 }
             }
         });

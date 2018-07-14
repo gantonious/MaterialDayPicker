@@ -38,20 +38,20 @@ public class MaterialDayPicker extends LinearLayout {
         listenToToggleEvents();
     }
 
-    public void setDaySelectionChangedListener(DaySelectionChangedListener daySelectionChangedListener) {
-        this.daySelectionChangedListener = daySelectionChangedListener;
-    }
-
-    public void setDayPressedListener(DayPressedListener dayPressedListener) {
-        this.dayPressedListener = dayPressedListener;
-    }
-
     public void setSelectionMode(SelectionMode selectionMode) {
         if (selectionMode == null) {
             throw new IllegalArgumentException("SelectionMode must not be null.");
         }
         this.selectionMode = selectionMode;
         handleChangesInAvailableDays();
+    }
+
+    public void setDayPressedListener(DayPressedListener dayPressedListener) {
+        this.dayPressedListener = dayPressedListener;
+    }
+
+    public void setDaySelectionChangedListener(DaySelectionChangedListener daySelectionChangedListener) {
+        this.daySelectionChangedListener = daySelectionChangedListener;
     }
 
     public List<Weekday> getSelectedDays() {
@@ -66,27 +66,16 @@ public class MaterialDayPicker extends LinearLayout {
         return selectedDays;
     }
 
+    public boolean isSelected(Weekday weekday) {
+        return getSelectedDays().contains(weekday);
+    }
+
     public void selectDay(final Weekday weekday) {
         handleSelection(weekday);
     }
 
     public void deselectDay(final Weekday weekday) {
         handleDeselection(weekday);
-    }
-
-    public boolean isSelected(Weekday weekday) {
-        return getSelectedDays().contains(weekday);
-    }
-
-    public void clearSelection() {
-        disableListenerWhileExecuting(new Action() {
-            @Override
-            public void call() {
-                for (Weekday selectedDay: getSelectedDays()) {
-                    deselectDay(selectedDay);
-                }
-            }
-        });
     }
 
     public void setSelectedDays(final Weekday... weekdays) {
@@ -101,6 +90,17 @@ public class MaterialDayPicker extends LinearLayout {
 
                 for (Weekday weekday: weekdays) {
                     selectDay(weekday);
+                }
+            }
+        });
+    }
+
+    public void clearSelection() {
+        disableListenerWhileExecuting(new Action() {
+            @Override
+            public void call() {
+                for (Weekday selectedDay: getSelectedDays()) {
+                    deselectDay(selectedDay);
                 }
             }
         });

@@ -7,8 +7,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta5'
-        classpath 'com.novoda:bintray-release:0.5.0'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.novoda:bintray-release:0.8.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -19,7 +19,7 @@ buildscript {
 ext {
     userOrg = 'gantonious'
     groupId = 'ca.antonious'
-    publishVersion = '0.3.2'
+    publishVersion = '0.4.0'
     website = "https://github.com/gantonious/MaterialDayPicker"
 }
 

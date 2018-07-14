@@ -1,7 +1,7 @@
 dependencies:
   pre:
     - echo y | android update sdk --no-ui --filter "android-26"
-    - echo y | android update sdk --no-ui --all --filter "build-tools-26.0.0"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-27.0.3"
 
 deployment:
   production:

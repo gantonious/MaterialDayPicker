@@ -168,7 +168,11 @@ public class MaterialDayPicker extends LinearLayout {
         WEDNESDAY,
         THURSDAY,
         FRIDAY,
-        SATURDAY
+        SATURDAY;
+
+        public static List<Weekday> getAllDays() {
+            return Arrays.asList(Weekday.values());
+        }
     }
 
     public interface DaySelectionChangedListener {

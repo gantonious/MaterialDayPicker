@@ -2,6 +2,7 @@ package ca.antonious.sampleapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDayPressed(MaterialDayPicker.Weekday weekday, boolean isSelected) {
                 String message = String.format("%s is selected: %b.", weekday.toString(), isSelected);
-                //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
 

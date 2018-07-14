@@ -133,7 +133,9 @@ public class MaterialDayPicker extends LinearLayout {
                     // the selection mode will generate the proper actions to
                     // carry about based on the users intent in
                     // applySelectionChangesUsing(SelectionDifference selectionDifference)
+                    ignoreToggleEvents();
                     compoundButton.setChecked(!didGetChecked);
+                    listenToToggleEvents();
 
                     if (didGetChecked) {
                         handleSelection(weekdayForToggle);

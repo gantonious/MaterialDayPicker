@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import ca.antonious.materialdaypicker.MaterialDayPicker;
+import ca.antonious.materialdaypicker.SingleSelectionMode;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //materialDayPicker.setSelectionMode(new SingleSelectionMode());
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
     }
 }

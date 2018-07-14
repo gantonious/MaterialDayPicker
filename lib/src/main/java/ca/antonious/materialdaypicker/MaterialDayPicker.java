@@ -35,7 +35,7 @@ public class MaterialDayPicker extends LinearLayout {
 
         inflateLayout(context);
         bindViews();
-        handleToggleEvents();
+        listenToToggleEvents();
     }
 
     public void setDaySelectionChangedListener(DaySelectionChangedListener daySelectionChangedListener) {
@@ -44,6 +44,13 @@ public class MaterialDayPicker extends LinearLayout {
 
     public void setDayPressedListener(DayPressedListener dayPressedListener) {
         this.dayPressedListener = dayPressedListener;
+    }
+
+    public void setSelectionMode(SelectionMode selectionMode) {
+        if (selectionMode == null) {
+            throw new IllegalArgumentException("SelectionMode must not be null.");
+        }
+        this.selectionMode = selectionMode;
     }
 
     public List<Weekday> getSelectedDays() {
@@ -59,21 +66,11 @@ public class MaterialDayPicker extends LinearLayout {
     }
 
     public void selectDay(final Weekday weekday) {
-        disableListenerWhileExecuting(new Action() {
-            @Override
-            public void call() {
-                getToggleFor(weekday).setChecked(true);
-            }
-        });
+        handleSelection(weekday);
     }
 
     public void deselectDay(final Weekday weekday) {
-        disableListenerWhileExecuting(new Action() {
-            @Override
-            public void call() {
-                getToggleFor(weekday).setChecked(false);
-            }
-        });
+        handleDeselection(weekday);
     }
 
     public boolean isSelected(Weekday weekday) {
@@ -84,8 +81,8 @@ public class MaterialDayPicker extends LinearLayout {
         disableListenerWhileExecuting(new Action() {
             @Override
             public void call() {
-                for (ToggleButton toggleButton: dayToggles) {
-                    toggleButton.setChecked(false);
+                for (Weekday selectedDay: getSelectedDays()) {
+                    deselectDay(selectedDay);
                 }
             }
         });
@@ -102,7 +99,7 @@ public class MaterialDayPicker extends LinearLayout {
                 clearSelection();
 
                 for (Weekday weekday: weekdays) {
-                    getToggleFor(weekday).setChecked(true);
+                    selectDay(weekday);
                 }
             }
         });
@@ -122,18 +119,56 @@ public class MaterialDayPicker extends LinearLayout {
         dayToggles.add((ToggleButton) findViewById(R.id.saturday_toggle));
     }
 
-    private void handleToggleEvents() {
+    private void listenToToggleEvents() {
         for (int i = 0; i < dayToggles.size(); i++) {
             final Weekday weekdayForToggle = Weekday.values()[i];
 
             dayToggles.get(i).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    onDayPressed(weekdayForToggle);
-                    onDaySelectionChanged();
+                public void onCheckedChanged(CompoundButton compoundButton, boolean didGetChecked) {
+                    if (didGetChecked) {
+                        handleSelection(weekdayForToggle);
+                    } else {
+                        handleDeselection(weekdayForToggle);
+                    }
                 }
             });
         }
+    }
+
+    private void ignoreToggleEvents() {
+        for (ToggleButton toggleButton: dayToggles) {
+            toggleButton.setOnCheckedChangeListener(null);
+        }
+    }
+
+    private void handleSelection(Weekday dayToSelect) {
+        SelectionState currentSelectionState = getSelectionState();
+        SelectionState nextSelectionState = selectionMode.getSelectionStateAfterSelecting(currentSelectionState, dayToSelect);
+        SelectionDifference selectionDifference = new SelectionDifference(currentSelectionState, nextSelectionState);
+        applySelectionChangesUsing(selectionDifference);
+    }
+
+    private void handleDeselection(Weekday dayToDeselect) {
+        SelectionState currentSelectionState = getSelectionState();
+        SelectionState nextSelectionState = selectionMode.getSelectionStateAfterDeselecting(currentSelectionState, dayToDeselect);
+        SelectionDifference selectionDifference = new SelectionDifference(currentSelectionState, nextSelectionState);
+        applySelectionChangesUsing(selectionDifference);
+    }
+
+    private void applySelectionChangesUsing(SelectionDifference selectionDifference) {
+        ignoreToggleEvents();
+
+        for (Weekday dayToDeselect: selectionDifference.getDaysToDeselect()) {
+            getToggleFor(dayToDeselect).setChecked(false);
+        }
+
+        for (Weekday dayToSelect: selectionDifference.getDaysToSelect()) {
+            getToggleFor(dayToSelect).setChecked(true);
+        }
+
+        listenToToggleEvents();
+        onDaySelectionChanged();
     }
 
     private void disableListenerWhileExecuting(Action action) {

@@ -12,7 +12,7 @@ public class SelectionDifference {
         daysToDeselect = new ArrayList<>();
 
         List<MaterialDayPicker.Weekday> initialSelections = initialSelectionState.getSelectedDays();
-        List<MaterialDayPicker.Weekday> finalSelections = initialSelectionState.getSelectedDays();
+        List<MaterialDayPicker.Weekday> finalSelections = finalSelectionState.getSelectedDays();
 
         for (MaterialDayPicker.Weekday day: initialSelections) {
             // if final selections did not contain an initial selection

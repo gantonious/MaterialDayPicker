@@ -14,6 +14,10 @@ public class SelectionState {
         this.selectedDays = new ArrayList<>(selectedDays);
     }
 
+    public List<MaterialDayPicker.Weekday> getSelectedDays() {
+        return new ArrayList<>(selectedDays);
+    }
+
     public static SelectionState withSingleDay(MaterialDayPicker.Weekday day) {
         return new SelectionState().withDaySelected(day);
     }

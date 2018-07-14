@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MaterialDayPicker extends LinearLayout {
     private List<ToggleButton> dayToggles = new ArrayList<>();
+    private SelectionMode selectionMode = new DefaultSelectionMode();
 
     private DaySelectionChangedListener daySelectionChangedListener;
     private DayPressedListener dayPressedListener;
@@ -147,6 +148,10 @@ public class MaterialDayPicker extends LinearLayout {
 
     private ToggleButton getToggleFor(Weekday weekday) {
         return dayToggles.get(weekday.ordinal());
+    }
+
+    private SelectionState getSelectionState() {
+        return new SelectionState(getSelectedDays());
     }
 
     private void onDaySelectionChanged() {

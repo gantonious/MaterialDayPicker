@@ -8,7 +8,7 @@ Inspired by the day picker in the builtin Android clock app:
 
 ```groovy
 dependencies {
-    compile 'ca.antonious:materialdaypicker:0.3.2'
+    compile 'ca.antonious:materialdaypicker:0.4.0'
 }
 ```
 

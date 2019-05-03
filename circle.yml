@@ -1,9 +1,0 @@
-dependencies:
-  pre:
-    - echo y | android update sdk --no-ui --filter "android-28"
-
-deployment:
-  production:
-    branch: release
-    commands:
-      - ./scripts/release-deploy-all.sh

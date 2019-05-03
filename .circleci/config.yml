@@ -1,0 +1,34 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run:
+          name: Build Library
+          command: ./gradlew :lib:assemble
+      - run:
+          name: Build Sample App
+          command: ./gradlew :app:assemble
+  deploy:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Bintray
+          command: ./scripts/release-deploy-all.sh
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+              - build
+          filters:
+              branches:
+                only: release

@@ -21,16 +21,16 @@ buildscript {
             'minSdk' : 19,
             'bintrayRelease' : '0.8.0',
             'gradleVersion' : '3.4.0',
-            'android' : [
-                'supportLibary' : '28.0.0',
-                'constraintLayout' : '1.1.0'
+            'androidx' : [
+                'appCompat' : '1.0.0',
+                'constraintLayout' : '1.1.3'
             ]
         ]
 
         depends = [
-            'android' : [
-                'appCompatV7' : "com.android.support:appcompat-v7:$versions.android.supportLibary",
-                'constraintLayout' : "com.android.support.constraint:constraint-layout:${versions.android.constraintLayout}"
+            'androidx' : [
+                'appCompatV7' : "androidx.appcompat:appcompat:${versions.androidx.appCompat}",
+                'constraintLayout' : "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}"
             ]
         ]
     }

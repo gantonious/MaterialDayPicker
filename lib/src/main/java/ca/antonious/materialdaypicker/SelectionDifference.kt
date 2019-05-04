@@ -8,7 +8,7 @@ internal data class SelectionDifference(
 internal fun selectionDifferenceOf(
     initialSelectionState: SelectionState,
     finalSelectionState: SelectionState
-) : SelectionDifference {
+): SelectionDifference {
 
     val initialSelections = initialSelectionState.selectedDays
     val finalSelections = finalSelectionState.selectedDays

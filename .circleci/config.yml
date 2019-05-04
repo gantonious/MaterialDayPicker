@@ -12,6 +12,17 @@ jobs:
       - run:
           name: Build Sample App
           command: ./gradlew :app:assemble
+  static-checks:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run:
+          name: Run ktlint
+          command: ./gradlew ktlint
+      - run:
+          name: Run lint
+          command: ./gradlew lint
   deploy:
     docker:
       - image: circleci/android:api-28
@@ -26,6 +37,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+      - static-checks
       - deploy:
           requires:
               - build

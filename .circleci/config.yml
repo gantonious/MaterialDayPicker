@@ -12,6 +12,12 @@ jobs:
       - run:
           name: Build Sample App
           command: ./gradlew :app:assemble
+      - store_artifacts:
+          path: ./app/build/outputs/apk/debug/app-debug.apk
+          destination: sample-app-debug.apk
+      - store_artifacts:
+          path: ./app/build/outputs/apk/release/app-release-unsigned.apk
+          destination: sample-app-release-unsigned.apk
       - persist_to_workspace:
           root: ./
           paths:
@@ -33,7 +39,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ./lib/build/
+          at: ./
       - run:
           name: Run unit tests
           command: ./gradlew :lib:testReleaseUnitTest

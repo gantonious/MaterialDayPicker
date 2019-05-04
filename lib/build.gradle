@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.novoda.bintray-release'
+apply from: ktlintPlugin
 
 android {
     compileSdkVersion versions.compileSdk
@@ -25,7 +26,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation depends.kotlin
+    implementation depends.kotlin.stdlib
     implementation depends.androidx.ktx
     implementation depends.androidx.appCompatV7
 }

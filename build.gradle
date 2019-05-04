@@ -8,6 +8,8 @@ buildscript {
     }
 
     ext {
+        ktlintPlugin = "${rootProject.projectDir}/ktlint.gradle"
+
         bintray = [
             'userOrg' : 'gantonious',
             'groupId' : 'ca.antonious',
@@ -20,6 +22,7 @@ buildscript {
             'targetSdk' : 28,
             'minSdk' : 19,
             'kotlin' : '1.3.31',
+            'ktlint' : '0.32.0',
             'bintrayRelease' : '0.8.0',
             'gradleVersion' : '3.4.0',
             'androidx' : [
@@ -30,7 +33,10 @@ buildscript {
         ]
 
         depends = [
-            'kotlin' : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+            'kotlin' : [
+                'stdlib' : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+                'lint' : "com.pinterest:ktlint:${versions.ktlint}"
+            ],
             'androidx' : [
                 'appCompatV7' : "androidx.appcompat:appcompat:${versions.androidx.appCompat}",
                 'ktx' : "androidx.core:core-ktx:${versions.androidx.ktx}",

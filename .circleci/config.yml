@@ -12,6 +12,10 @@ jobs:
       - run:
           name: Build Sample App
           command: ./gradlew :app:assemble
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./lib/build/
   static-checks:
     docker:
       - image: circleci/android:api-28
@@ -23,6 +27,18 @@ jobs:
       - run:
           name: Run lint
           command: ./gradlew lint
+  test:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./lib/build/
+      - run:
+          name: Run unit tests
+          command: ./gradlew :lib:testReleaseUnitTest
+      - store_test_results:
+          path: ./lib/build/test-results/testReleaseUnitTest
   deploy:
     docker:
       - image: circleci/android:api-28
@@ -38,6 +54,9 @@ workflows:
     jobs:
       - build
       - static-checks
+      - test:
+          requires:
+              - build
       - deploy:
           requires:
               - build

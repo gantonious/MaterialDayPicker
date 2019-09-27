@@ -14,18 +14,49 @@ import kotlinx.android.synthetic.main.day_of_the_week_picker.view.tuesday_toggle
 import kotlinx.android.synthetic.main.day_of_the_week_picker.view.wednesday_toggle
 
 /**
- * Created by George on 2017-11-04.
+ * An android widget that resembles the day of the week picker in the
+ * stock clock app.
+ *
+ * All colors can be customized by overriding the following color values:
+ *     dayPressed - the color when a day is being held down
+ *     daySelected - the color when a day is selected
+ *     dayDeselected - the color when a day is deselected
  */
 class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+
+    /**
+     * Gets/sets the current [DayPressedListener].
+     *
+     * @see DayPressedListener
+     */
     var dayPressedListener: DayPressedListener? = null
+
+    /**
+     * Gets/sets the current [DaySelectionChangedListener].
+     *
+     * @see DaySelectionChangedListener
+     */
     var daySelectionChangedListener: DaySelectionChangedListener? = null
 
+    /**
+     * Gets/sets the current selection mode. Note when updating the selection mode
+     * all selections will be cleared.
+     *
+     * eg. To only allow one day to be selected at a time do
+     *     materialDayPicker.selectionMode = SingleSelectionMode.create()
+     *
+     * @see SelectionMode
+     * @return the current selection mode
+     */
     var selectionMode: SelectionMode = DefaultSelectionMode()
         set(value) {
             field = value
             clearSelectionIgnoringSelectionMode()
         }
 
+    /**
+     * Returns a list of the currently selected [Weekday]s
+     */
     val selectedDays: List<Weekday>
         get() = dayToggles.asSequence()
             .mapIndexed { index, button -> Pair(Weekday[index], button.isChecked) }
@@ -44,22 +75,49 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         listenToToggleEvents()
     }
 
+    /**
+     * Checks if the passed [Weekday] is currently selected
+     *
+     * @param weekday the day to check
+     */
     fun isSelected(weekday: Weekday): Boolean {
         return selectedDays.contains(weekday)
     }
 
+    /**
+     * Updates the passed in [Weekday] to the selected state.
+     *
+     * @param weekday to select
+     */
     fun selectDay(weekday: Weekday) {
         handleSelection(weekday)
     }
 
+    /**
+     * Updates the passed in [Weekday] to a deselected state.
+     *
+     * @param weekday to deselect
+     */
     fun deselectDay(weekday: Weekday) {
         handleDeselection(weekday)
     }
 
+    /**
+     * Clears the current selection and replaces it with the passed in
+     * [Weekday]s
+     *
+     * @param weekdays days to select
+     */
     fun setSelectedDays(vararg weekdays: Weekday) {
         setSelectedDays(weekdays.toList())
     }
 
+    /**
+     * Clears the current selection and replaces it with the passed in
+     * list of [Weekday]s
+     *
+     * @param weekdays days to select
+     */
     fun setSelectedDays(weekdays: List<Weekday>) {
         disableListenerWhileExecuting {
             clearSelection()
@@ -67,6 +125,9 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         }
     }
 
+    /**
+     * Clears all currently selected days
+     */
     fun clearSelection() {
         disableListenerWhileExecuting {
             selectedDays.forEach { deselectDay(it) }
@@ -177,6 +238,9 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         daySelectionChangedListener?.onDaySelectionChanged(selectedDays)
     }
 
+    /**
+     * Representation of
+     */
     enum class Weekday {
         SUNDAY,
         MONDAY,
@@ -196,11 +260,30 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         }
     }
 
+    /**
+     * Provides a way to listen to any changes made to the selected days. If you need to capture
+     * updates for a specific day use a [DayPressedListener]
+     */
     interface DaySelectionChangedListener {
+        /**
+         * This is invoked when any selection change is made.
+         *
+         * @param selectedDays all currently selected days after the most recent update
+         */
         fun onDaySelectionChanged(selectedDays: List<@JvmSuppressWildcards Weekday>)
     }
 
+    /**
+     * Provides a way to listen to any changes on a per day basis. This provides more granular
+     * update information compared to [DaySelectionChangedListener]
+     */
     interface DayPressedListener {
+        /**
+         * This is invoked when a specific day is toggled on/off
+         *
+         * @param weekday The day that was updated
+         * @param isSelected The updated selection state for provided [weekday]
+         */
         fun onDayPressed(weekday: Weekday, isSelected: Boolean)
     }
 }

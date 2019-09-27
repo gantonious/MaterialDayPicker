@@ -21,11 +21,13 @@ buildscript {
             'compileSdk' : 28,
             'targetSdk' : 28,
             'minSdk' : 19,
-            'kotlin' : '1.3.31',
-            'ktlint' : '0.32.0',
+            'kotlin' : '1.3.50',
+            'ktlint' : '0.34.2',
             'junit' : '4.12',
             'bintrayRelease' : '0.8.0',
-            'gradleVersion' : '3.4.0',
+            'android' : [
+                'gradleVersion' : '3.5.0',
+            ],
             'androidx' : [
                 'appCompat' : '1.0.0',
                 'ktx': '1.0.0',
@@ -49,7 +51,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${versions.gradleVersion}"
+        classpath "com.android.tools.build:gradle:${versions.android.gradleVersion}"
         classpath "com.novoda:bintray-release:${versions.bintrayRelease}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
     }

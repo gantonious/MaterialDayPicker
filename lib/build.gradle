@@ -35,9 +35,10 @@ dependencies {
 }
 
 publish {
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
+    userOrg = rootProject.ext.bintray.userOrg
+    groupId = rootProject.ext.bintray.groupId
+    publishVersion = rootProject.ext.bintray.publishVersion
+    website = rootProject.ext.bintray.website
     artifactId = 'materialdaypicker'
-    publishVersion = bintray.publishVersion
-    website = bintray.website
+    desc = 'An elegant day of the week picker inspired by Android\'s clock app.'
 }

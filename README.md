@@ -4,11 +4,16 @@ Inspired by the day picker in the builtin Android clock app:
 
 ![Day picker screenshot](screenshots/selections.png)
 
-## Download
+## What's New: Version 0.5.0 -  Internal Improvements
+- Migrated library to AndroidX
+- Migrated library to Kotlin while maintaining Java compatibility
+- Added KDocs to all public APIs
+
+Download the latest version by adding the following to your project's `build.gradle` file:
 
 ```groovy
 dependencies {
-    compile 'ca.antonious:materialdaypicker:0.4.0'
+    implementation 'ca.antonious:materialdaypicker:0.5.0'
 }
 ```
 

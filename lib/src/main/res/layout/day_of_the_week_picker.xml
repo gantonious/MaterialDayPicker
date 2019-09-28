@@ -1,88 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_gravity="center_horizontal">
 
-    <LinearLayout
+    <ToggleButton
+        android:id="@+id/sunday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/sunday_abbreviation"
+        android:textOff="@string/sunday_abbreviation"/>
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <ToggleButton
-            android:id="@+id/sunday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/sunday_abbreviation"
-            android:textOff="@string/sunday_abbreviation"/>
+    <ToggleButton
+        android:id="@+id/monday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/monday_abbreviation"
+        android:textOff="@string/monday_abbreviation"/>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <ToggleButton
-            android:id="@+id/monday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/monday_abbreviation"
-            android:textOff="@string/monday_abbreviation"/>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 
-        <ToggleButton
-            android:id="@+id/tuesday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/tuesday_abbreviation"
-            android:textOff="@string/tuesday_abbreviation"/>
+    <ToggleButton
+        android:id="@+id/tuesday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/tuesday_abbreviation"
+        android:textOff="@string/tuesday_abbreviation"/>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <ToggleButton
-            android:id="@+id/wednesday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/wednesday_abbreviation"
-            android:textOff="@string/wednesday_abbreviation" />
+    <ToggleButton
+        android:id="@+id/wednesday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/wednesday_abbreviation"
+        android:textOff="@string/wednesday_abbreviation" />
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 
-        <ToggleButton
-            android:id="@+id/thursday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/thursday_abbreviation"
-            android:textOff="@string/thursday_abbreviation"/>
+    <ToggleButton
+        android:id="@+id/thursday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/thursday_abbreviation"
+        android:textOff="@string/thursday_abbreviation"/>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <ToggleButton
-            android:id="@+id/friday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/friday_abbreviation"
-            android:textOff="@string/friday_abbreviation"/>
+    <ToggleButton
+        android:id="@+id/friday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/friday_abbreviation"
+        android:textOff="@string/friday_abbreviation"/>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <ToggleButton
-            android:id="@+id/saturday_toggle"
-            style="@style/MaterialDayPickerToggle"
-            android:textOn="@string/saturday_abbreviation"
-            android:textOff="@string/saturday_abbreviation"/>
-    </LinearLayout>
-
+    <ToggleButton
+        android:id="@+id/saturday_toggle"
+        style="@style/MaterialDayPickerToggle"
+        android:textOn="@string/saturday_abbreviation"
+        android:textOff="@string/saturday_abbreviation"/>
 </LinearLayout>

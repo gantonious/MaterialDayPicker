@@ -8,7 +8,7 @@
 
     <ca.antonious.materialdaypicker.MaterialDayPicker
         android:id="@+id/dayPicker"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,9 @@
+<resources>
+    <string name="sunday_abbreviation">र</string>
+    <string name="monday_abbreviation">सो</string>
+    <string name="tuesday_abbreviation">मं</string>
+    <string name="wednesday_abbreviation">बु</string>
+    <string name="thursday_abbreviation">गु</string>
+    <string name="friday_abbreviation">शु</string>
+    <string name="saturday_abbreviation">श</string>
+</resources>

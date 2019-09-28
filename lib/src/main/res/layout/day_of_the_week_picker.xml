@@ -19,7 +19,7 @@
             android:textOn="S"
             android:textOff="S"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -36,7 +36,7 @@
             android:textOn="M"
             android:textOff="M"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -54,7 +54,7 @@
             android:textOn="T"
             android:textOff="T"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -71,7 +71,7 @@
             android:textOn="W"
             android:textOff="W"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -89,7 +89,7 @@
             android:textOn="T"
             android:textOff="T"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -106,7 +106,7 @@
             android:textOn="F"
             android:textOff="F"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
 
         <View
@@ -123,7 +123,7 @@
             android:textOn="S"
             android:textOff="S"
             android:textSize="22sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/circle_toggle_button_text_color"
             android:text="New ToggleButton" />
     </LinearLayout>
 

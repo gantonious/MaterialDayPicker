@@ -1,8 +1,8 @@
 package ca.antonious.sampleapp;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
         final MaterialDayPicker materialDayPicker = findViewById(R.id.dayPicker);
         materialDayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
-            public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> selectedDays) {
+            public void onDaySelectionChanged(@NonNull List<MaterialDayPicker.Weekday> selectedDays) {
                 Toast.makeText(MainActivity.this, "Days Changed", Toast.LENGTH_SHORT).show();
             }
         });
 
         materialDayPicker.setDayPressedListener(new MaterialDayPicker.DayPressedListener() {
             @Override
-            public void onDayPressed(MaterialDayPicker.Weekday weekday, boolean isSelected) {
+            public void onDayPressed(@NonNull MaterialDayPicker.Weekday weekday, boolean isSelected) {
                 String message = String.format("%s is selected: %b.", weekday.toString(), isSelected);
             }
         });

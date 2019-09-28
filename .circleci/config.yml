@@ -1,0 +1,104 @@
+version: 2.1
+
+orbs:
+  android:
+    commands:
+      restore-build-cache:
+        steps:
+          - restore_cache:
+              key: android-cache-key-
+      save-build-cache:
+        steps:
+          - save_cache:
+              key: android-cache-key-{{ epoch }}
+              paths:
+              - ~/.android/build-cache
+              - ~/.android/cache
+              - ~/.gradle/
+      persist-build-outputs:
+        parameters:
+          module-name:
+            type: string
+        steps:
+          - persist_to_workspace:
+              root: .
+              paths: ./<< parameters.module-name >>/build
+      attach-build-outputs:
+        steps:
+          - attach_workspace:
+              at: ./
+
+executors:
+  android-executor:
+    docker:
+      - image: circleci/android:api-28
+
+jobs:
+  build:
+    executor: android-executor
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - run:
+          name: Build Library
+          command: ./gradlew :lib:assemble
+      - run:
+          name: Build Sample App
+          command: ./gradlew :app:assemble
+      - android/save-build-cache
+      - android/persist-build-outputs:
+          module-name: lib
+      - store_artifacts:
+          path: ./app/build/outputs/apk/debug/app-debug.apk
+          destination: sample-app-debug.apk
+      - store_artifacts:
+          path: ./app/build/outputs/apk/release/app-release-unsigned.apk
+          destination: sample-app-release-unsigned.apk
+  static-checks:
+    executor: android-executor
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - run:
+          name: Run ktlint
+          command: ./gradlew ktlint
+      - run:
+          name: Run lint
+          command: ./gradlew lint
+      - android/save-build-cache
+  test:
+    executor: android-executor
+    steps:
+      - checkout
+      - android/restore-build-cache
+      - android/attach-build-outputs
+      - run:
+          name: Run unit tests
+          command: ./gradlew :lib:testReleaseUnitTest
+      - store_test_results:
+          path: ./lib/build/test-results/testReleaseUnitTest
+      - android/save-build-cache
+  deploy:
+    executor: android-executor
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Bintray
+          command: ./scripts/release-deploy-all.sh
+
+workflows:
+  version: 2
+  material-day-picker-build:
+    jobs:
+      - build
+      - static-checks
+      - test:
+          requires:
+              - build
+      - deploy:
+          requires:
+              - test
+              - static-checks
+          filters:
+              branches:
+                only: release

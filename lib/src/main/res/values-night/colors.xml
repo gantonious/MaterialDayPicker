@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dayPressed">#EEEEEE</color>
+    <color name="daySelected">@android:color/white</color>
+    <color name="dayDeselected">#303030</color>
+    <color name="daySelectedTextColor">@android:color/black</color>
+    <color name="dayDeselectedTextColor">@android:color/white</color>
+</resources>

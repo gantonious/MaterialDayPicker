@@ -1,4 +1,6 @@
-# MaterialDayPicker [![CircleCI](https://circleci.com/gh/gantonious/MaterialDayPicker.svg?style=svg)](https://circleci.com/gh/gantonious/MaterialDayPicker)
+# MaterialDayPicker
+
+[![CircleCI](https://circleci.com/gh/gantonious/MaterialDayPicker.svg?style=svg)](https://circleci.com/gh/gantonious/MaterialDayPicker) [![Download](https://api.bintray.com/packages/gantonious/maven/materialdaypicker/images/download.svg)](https://bintray.com/gantonious/maven/materialdaypicker/_latestVersion)
 
 Inspired by the day picker in the builtin Android clock app:
 
@@ -38,20 +40,17 @@ You can overide these three colors to change how the date picker looks:
 
 You can get the currently selected days by using:
 
-```java
-List<MaterialDayPicker.Weekday> daysSelected = materialDayPicker.getSelectedDays();
+```kotlin
+val selectedDays = materialDayPicker.selectedDays
 // returns [MaterialDayPicker.Weekday.TUESDAY, MaterialDayPicker.Weekday.FRIDAY]
 ```
 
 If you want to listen to whenever the day selection is changed you can use:
 
-```java
-materialDayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
-    @Override
-    public void onDaySelectionChanged(List<MaterialDayPicker.Weekday> selectedDays) {
-        // handle selection change
-    }
-});
+```kotlin
+materialDayPicker.setDaySelectionChangedListener { selectedDays ->
+    // handle selection change
+}
 ```
 
 ## License

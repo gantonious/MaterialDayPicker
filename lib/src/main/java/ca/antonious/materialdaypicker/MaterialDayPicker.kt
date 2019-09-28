@@ -134,6 +134,42 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         }
     }
 
+    /**
+     * Sets a lambda to invoke whenever a day is selected/deselected.
+     *
+     * This method wraps the provided lambda into a [DayPressedListener] and
+     * sets it to this instance's [dayPressedListener].
+     *
+     * @see DayPressedListener
+     * @param onDayPressed lambda to invoke when a day is pressed
+     */
+    @JvmSynthetic
+    fun setDayPressedListener(onDayPressed: (weekday: Weekday, isSelected: Boolean) -> Unit) {
+        this.dayPressedListener = object : DayPressedListener {
+            override fun onDayPressed(weekday: Weekday, isSelected: Boolean) {
+                onDayPressed.invoke(weekday, isSelected)
+            }
+        }
+    }
+
+    /**
+     * Sets a lambda to invoke whenever the selection of days has changed.
+     *
+     * This method wraps the provided lambda into a [DaySelectionChangedListener]
+     * and sets it to this instance's [daySelectionChangedListener].
+     *
+     * @see DaySelectionChangedListener
+     * @param onDaySelectionChanged lambda to invoke when day selection has changed
+     */
+    @JvmSynthetic
+    fun setDaySelectionChangedListener(onDaySelectionChanged: (selectedDays: List<Weekday>) -> Unit) {
+        this.daySelectionChangedListener = object : DaySelectionChangedListener {
+            override fun onDaySelectionChanged(selectedDays: List<Weekday>) {
+                onDaySelectionChanged.invoke(selectedDays)
+            }
+        }
+    }
+
     private fun inflateLayoutUsing(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.day_of_the_week_picker, this, true)
     }

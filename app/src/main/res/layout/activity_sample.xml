@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.antonious.sampleapp.MainActivity">
+
+    <ca.antonious.materialdaypicker.MaterialDayPicker
+        android:id="@+id/dayPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dayPicker" />
+
+
+    <Button
+        android:id="@+id/clearLogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="16dp"
+        android:text="Clear Log"
+        app:layout_constraintStart_toEndOf="@id/clearButton"
+        app:layout_constraintTop_toBottomOf="@+id/dayPicker" />
+
+    <Switch
+        android:id="@+id/singleModeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Single Mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clearButton" />
+
+    <TextView
+        android:id="@+id/event_log"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:textSize="14sp"
+        android:typeface="monospace"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/singleModeSwitch"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Sample logs" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

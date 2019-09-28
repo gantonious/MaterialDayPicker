@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -25,6 +27,8 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation depends.kotlin.stdlib
+    implementation depends.androidx.ktx
     implementation depends.androidx.appCompatV7
     implementation depends.androidx.constraintLayout
 }

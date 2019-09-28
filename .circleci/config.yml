@@ -81,6 +81,7 @@ jobs:
   deploy:
     executor: android-executor
     steps:
+      - checkout
       - run:
           name: Deploy to Bintray
           command: ./scripts/release-deploy-all.sh
@@ -97,6 +98,7 @@ workflows:
       - deploy:
           requires:
               - test
+              - static-checks
           filters:
               branches:
                 only: release

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MaterialDayPickerToggle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/circle_toggle_button</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/circle_toggle_button_text_color</item>
+    </style>
+</resources>

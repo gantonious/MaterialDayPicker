@@ -12,15 +12,9 @@
 
         <ToggleButton
             android:id="@+id/sunday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="S"
-            android:textOff="S"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="S"/>
 
         <View
             android:layout_width="wrap_content"
@@ -29,15 +23,9 @@
 
         <ToggleButton
             android:id="@+id/monday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="M"
-            android:textOff="M"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="M"/>
 
         <View
             android:layout_width="wrap_content"
@@ -47,15 +35,9 @@
 
         <ToggleButton
             android:id="@+id/tuesday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="T"
-            android:textOff="T"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="T"/>
 
         <View
             android:layout_width="wrap_content"
@@ -64,15 +46,9 @@
 
         <ToggleButton
             android:id="@+id/wednesday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="W"
-            android:textOff="W"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="W" />
 
         <View
             android:layout_width="wrap_content"
@@ -82,15 +58,9 @@
 
         <ToggleButton
             android:id="@+id/thursday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="T"
-            android:textOff="T"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="T"/>
 
         <View
             android:layout_width="wrap_content"
@@ -99,15 +69,9 @@
 
         <ToggleButton
             android:id="@+id/friday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="F"
-            android:textOff="F"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="F"/>
 
         <View
             android:layout_width="wrap_content"
@@ -116,15 +80,9 @@
 
         <ToggleButton
             android:id="@+id/saturday_toggle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/circle_toggle_button"
+            style="@style/MaterialDayPickerToggle"
             android:textOn="S"
-            android:textOff="S"
-            android:textSize="22sp"
-            android:textColor="@color/circle_toggle_button_text_color"
-            android:text="New ToggleButton" />
+            android:textOff="S"/>
     </LinearLayout>
 
 </LinearLayout>

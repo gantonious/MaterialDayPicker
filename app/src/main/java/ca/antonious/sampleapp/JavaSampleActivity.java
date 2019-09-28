@@ -1,13 +1,16 @@
 package ca.antonious.sampleapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -15,24 +18,28 @@ import ca.antonious.materialdaypicker.DefaultSelectionMode;
 import ca.antonious.materialdaypicker.MaterialDayPicker;
 import ca.antonious.materialdaypicker.SingleSelectionMode;
 
-public class MainActivity extends AppCompatActivity {
+public class JavaSampleActivity extends AppCompatActivity {
+    private TextView eventLog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sample);
+
+        eventLog = findViewById(R.id.event_log);
 
         final MaterialDayPicker materialDayPicker = findViewById(R.id.dayPicker);
         materialDayPicker.setDaySelectionChangedListener(new MaterialDayPicker.DaySelectionChangedListener() {
             @Override
             public void onDaySelectionChanged(@NonNull List<MaterialDayPicker.Weekday> selectedDays) {
-                Toast.makeText(MainActivity.this, "Days Changed", Toast.LENGTH_SHORT).show();
+                appendLog(String.format("[DaySelectionChangedListener]%s", selectedDays.toString()));
             }
         });
 
         materialDayPicker.setDayPressedListener(new MaterialDayPicker.DayPressedListener() {
             @Override
             public void onDayPressed(@NonNull MaterialDayPicker.Weekday weekday, boolean isSelected) {
-                String message = String.format("%s is selected: %b.", weekday.toString(), isSelected);
+                appendLog(String.format("[DayPressedListener] %s is selected: %b", weekday.toString(), isSelected));
             }
         });
 
@@ -43,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 materialDayPicker.clearSelection();
+            }
+        });
+
+        Button clearLogButton = findViewById(R.id.clearLogButton);
+        clearLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventLog.setText("");
             }
         });
 
@@ -57,5 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void appendLog(String logMessage) {
+        eventLog.setText(logMessage + "\n" + eventLog.getText());
     }
 }

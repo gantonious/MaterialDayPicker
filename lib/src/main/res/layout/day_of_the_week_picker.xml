@@ -13,8 +13,8 @@
         <ToggleButton
             android:id="@+id/sunday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="S"
-            android:textOff="S"/>
+            android:textOn="@string/sunday_abbreviation"
+            android:textOff="@string/sunday_abbreviation"/>
 
         <View
             android:layout_width="wrap_content"
@@ -24,8 +24,8 @@
         <ToggleButton
             android:id="@+id/monday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="M"
-            android:textOff="M"/>
+            android:textOn="@string/monday_abbreviation"
+            android:textOff="@string/monday_abbreviation"/>
 
         <View
             android:layout_width="wrap_content"
@@ -36,8 +36,8 @@
         <ToggleButton
             android:id="@+id/tuesday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="T"
-            android:textOff="T"/>
+            android:textOn="@string/tuesday_abbreviation"
+            android:textOff="@string/tuesday_abbreviation"/>
 
         <View
             android:layout_width="wrap_content"
@@ -47,8 +47,8 @@
         <ToggleButton
             android:id="@+id/wednesday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="W"
-            android:textOff="W" />
+            android:textOn="@string/wednesday_abbreviation"
+            android:textOff="@string/wednesday_abbreviation" />
 
         <View
             android:layout_width="wrap_content"
@@ -59,8 +59,8 @@
         <ToggleButton
             android:id="@+id/thursday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="T"
-            android:textOff="T"/>
+            android:textOn="@string/thursday_abbreviation"
+            android:textOff="@string/thursday_abbreviation"/>
 
         <View
             android:layout_width="wrap_content"
@@ -70,8 +70,8 @@
         <ToggleButton
             android:id="@+id/friday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="F"
-            android:textOff="F"/>
+            android:textOn="@string/friday_abbreviation"
+            android:textOff="@string/friday_abbreviation"/>
 
         <View
             android:layout_width="wrap_content"
@@ -81,8 +81,8 @@
         <ToggleButton
             android:id="@+id/saturday_toggle"
             style="@style/MaterialDayPickerToggle"
-            android:textOn="S"
-            android:textOff="S"/>
+            android:textOn="@string/saturday_abbreviation"
+            android:textOff="@string/saturday_abbreviation"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">MaterialDayPicker</string>
+    <string name="sunday_abbreviation">S</string>
+    <string name="monday_abbreviation">M</string>
+    <string name="tuesday_abbreviation">T</string>
+    <string name="wednesday_abbreviation">W</string>
+    <string name="thursday_abbreviation">T</string>
+    <string name="friday_abbreviation">F</string>
+    <string name="saturday_abbreviation">S</string>
 </resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="sunday_abbreviation">в</string>
+    <string name="monday_abbreviation">п</string>
+    <string name="tuesday_abbreviation">в</string>
+    <string name="wednesday_abbreviation">с</string>
+    <string name="thursday_abbreviation">ч</string>
+    <string name="friday_abbreviation">п</string>
+    <string name="saturday_abbreviation">с</string>
+</resources>

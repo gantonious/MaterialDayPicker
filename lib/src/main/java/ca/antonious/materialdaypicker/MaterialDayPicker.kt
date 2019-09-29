@@ -1,14 +1,12 @@
 package ca.antonious.materialdaypicker
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
-import java.time.DayOfWeek
-import java.time.format.TextStyle
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import kotlinx.android.synthetic.main.day_of_the_week_picker.view.friday_toggle
 import kotlinx.android.synthetic.main.day_of_the_week_picker.view.monday_toggle
@@ -27,7 +25,11 @@ import kotlinx.android.synthetic.main.day_of_the_week_picker.view.wednesday_togg
  *     daySelected - the color when a day is selected
  *     dayDeselected - the color when a day is deselected
  */
-class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+class MaterialDayPicker @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     /**
      * Gets/sets the current [DayPressedListener].
@@ -192,8 +194,8 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun ToggleButton.withLocalizedLabel(weekday: Weekday): ToggleButton {
-        textOn = weekday.getAbbreviation(context)
-        textOff = weekday.getAbbreviation(context)
+        textOn = weekday.abbreviation
+        textOff = weekday.abbreviation
         // setting textOn/textOff doesn't force a redraw so we just set
         // isChecked to its current value
         isChecked = isChecked
@@ -306,49 +308,28 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
          * i.e. In an english based locale:
          *
          * ```kotlin
-         *     Weekday.MONDAY.getAbbreviation(context) == "M"
-         *     Weekday.THURSDAY.getAbbreviation(context) == "T"
+         *     Weekday.MONDAY.abbreviation == "M"
+         *     Weekday.THURSDAY.abbreviation == "T"
          * ```
-         *
-         * @param context context used to resolve the abbreviation
-         * @return An abbreviated representation of [Weekday] based on the current Locale
          */
-        fun getAbbreviation(context: Context): String {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                localizeDayOfWeekUsingJavaTime()
-            } else {
-                localizeDayUsingTranslatedStrings(context)
+        val abbreviation: String
+            get() {
+                val dayOfWeek = when (this) {
+                    SUNDAY -> Calendar.SUNDAY
+                    MONDAY -> Calendar.MONDAY
+                    TUESDAY -> Calendar.TUESDAY
+                    WEDNESDAY -> Calendar.WEDNESDAY
+                    THURSDAY -> Calendar.THURSDAY
+                    FRIDAY -> Calendar.FRIDAY
+                    SATURDAY -> Calendar.SATURDAY
+                }
+
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_WEEK, dayOfWeek)
+                }
+
+                return SimpleDateFormat("EEEEE", Locale.getDefault()).format(calendar.time)
             }
-        }
-
-        private fun localizeDayUsingTranslatedStrings(context: Context): String {
-            val stringRes = when (this) {
-                SUNDAY -> R.string.sunday_abbreviation
-                MONDAY -> R.string.monday_abbreviation
-                TUESDAY -> R.string.tuesday_abbreviation
-                WEDNESDAY -> R.string.wednesday_abbreviation
-                THURSDAY -> R.string.thursday_abbreviation
-                FRIDAY -> R.string.friday_abbreviation
-                SATURDAY -> R.string.saturday_abbreviation
-            }
-
-            return context.getString(stringRes)
-        }
-
-        @TargetApi(Build.VERSION_CODES.O)
-        private fun localizeDayOfWeekUsingJavaTime(): String {
-            val dayOfWeek = when (this) {
-                SUNDAY -> DayOfWeek.SUNDAY
-                MONDAY -> DayOfWeek.MONDAY
-                TUESDAY -> DayOfWeek.TUESDAY
-                WEDNESDAY -> DayOfWeek.WEDNESDAY
-                THURSDAY -> DayOfWeek.THURSDAY
-                FRIDAY -> DayOfWeek.FRIDAY
-                SATURDAY -> DayOfWeek.SATURDAY
-            }
-
-            return dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault())
-        }
 
         companion object {
             operator fun get(index: Int): Weekday {

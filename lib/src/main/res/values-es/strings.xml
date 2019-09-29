@@ -1,9 +1,0 @@
-<resources>
-    <string name="sunday_abbreviation">D</string>
-    <string name="monday_abbreviation">L</string>
-    <string name="tuesday_abbreviation">M</string>
-    <string name="wednesday_abbreviation">M</string>
-    <string name="thursday_abbreviation">J</string>
-    <string name="friday_abbreviation">V</string>
-    <string name="saturday_abbreviation">S</string>
-</resources>

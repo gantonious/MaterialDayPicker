@@ -1,9 +1,0 @@
-<resources>
-    <string name="sunday_abbreviation">日</string>
-    <string name="monday_abbreviation">月</string>
-    <string name="tuesday_abbreviation">火</string>
-    <string name="wednesday_abbreviation">水</string>
-    <string name="thursday_abbreviation">木</string>
-    <string name="friday_abbreviation">金</string>
-    <string name="saturday_abbreviation">土</string>
-</resources>

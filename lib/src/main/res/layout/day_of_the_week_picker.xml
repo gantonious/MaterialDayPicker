@@ -7,7 +7,7 @@
     android:layout_gravity="center_horizontal">
 
     <ToggleButton
-        android:id="@+id/sunday_toggle"
+        android:id="@+id/toggle_0"
         style="@style/MaterialDayPickerToggle"/>
 
     <View
@@ -16,26 +16,7 @@
         android:layout_weight="1"/>
 
     <ToggleButton
-        android:id="@+id/monday_toggle"
-        style="@style/MaterialDayPickerToggle"/>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
-    <ToggleButton
-        android:id="@+id/tuesday_toggle"
-        style="@style/MaterialDayPickerToggle"/>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <ToggleButton
-        android:id="@+id/wednesday_toggle"
+        android:id="@+id/toggle_1"
         style="@style/MaterialDayPickerToggle"/>
 
     <View
@@ -45,7 +26,7 @@
 
 
     <ToggleButton
-        android:id="@+id/thursday_toggle"
+        android:id="@+id/toggle_2"
         style="@style/MaterialDayPickerToggle"/>
 
     <View
@@ -54,7 +35,17 @@
         android:layout_weight="1"/>
 
     <ToggleButton
-        android:id="@+id/friday_toggle"
+        android:id="@+id/toggle_3"
+        style="@style/MaterialDayPickerToggle"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
+    <ToggleButton
+        android:id="@+id/toggle_4"
         style="@style/MaterialDayPickerToggle"/>
 
     <View
@@ -63,6 +54,15 @@
         android:layout_weight="1"/>
 
     <ToggleButton
-        android:id="@+id/saturday_toggle"
+        android:id="@+id/toggle_5"
+        style="@style/MaterialDayPickerToggle"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <ToggleButton
+        android:id="@+id/toggle_6"
         style="@style/MaterialDayPickerToggle"/>
 </LinearLayout>

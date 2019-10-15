@@ -2,17 +2,19 @@ package ca.antonious.sampleapp;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
+import java.util.Locale;
 
 import ca.antonious.materialdaypicker.DefaultSelectionMode;
 import ca.antonious.materialdaypicker.MaterialDayPicker;
@@ -72,6 +74,33 @@ public class JavaSampleActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Locale[] allLocales = Locale.getAvailableLocales();
+        Spinner localeSpinner = findViewById(R.id.locale_spinner);
+
+        localeSpinner.setAdapter(new ArrayAdapter<Locale>(this, R.layout.spinner_text_view, allLocales));
+
+        localeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                materialDayPicker.setLocale(allLocales[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // no-op
+            }
+        });
+
+        int localePosition = 0;
+
+        for (Locale locale: allLocales) {
+            if (locale.equals(Locale.getDefault())) {
+                localeSpinner.setSelection(localePosition);
+                break;
+            }
+            localePosition++;
+        }
     }
 
     private void appendLog(String logMessage) {

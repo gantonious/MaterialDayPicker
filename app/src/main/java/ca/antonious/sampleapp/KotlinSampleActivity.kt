@@ -1,7 +1,9 @@
 package ca.antonious.sampleapp
 
 import android.os.Bundle
-import android.widget.CompoundButton
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 
 import ca.antonious.materialdaypicker.DefaultSelectionMode
@@ -11,7 +13,9 @@ import kotlinx.android.synthetic.main.activity_sample.clearButton
 import kotlinx.android.synthetic.main.activity_sample.clearLogButton
 import kotlinx.android.synthetic.main.activity_sample.dayPicker
 import kotlinx.android.synthetic.main.activity_sample.event_log
+import kotlinx.android.synthetic.main.activity_sample.locale_spinner
 import kotlinx.android.synthetic.main.activity_sample.singleModeSwitch
+import java.util.Locale
 
 class KotlinSampleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +42,25 @@ class KotlinSampleActivity : AppCompatActivity() {
             event_log.text = ""
         }
 
-        singleModeSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, didGetChecked ->
+        singleModeSwitch.setOnCheckedChangeListener { _, didGetChecked ->
             if (didGetChecked) {
                 materialDayPicker.selectionMode = SingleSelectionMode.create()
             } else {
                 materialDayPicker.selectionMode = DefaultSelectionMode.create()
             }
-        })
+        }
+
+        val allLocales = Locale.getAvailableLocales()
+        locale_spinner.adapter = ArrayAdapter(this, R.layout.spinner_text_view, allLocales)
+        locale_spinner.setSelection(allLocales.indexOf(Locale.getDefault()))
+
+        locale_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                materialDayPicker.locale = allLocales[position]
+            }
+        }
+
     }
 
     private fun appendLog(log: String) {

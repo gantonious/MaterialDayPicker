@@ -65,6 +65,26 @@ class MaterialDayPicker @JvmOverloads constructor(
         }
 
     /**
+     * Gets/sets the current locale of the day picker. This is set to [Locale.getDefault]
+     * by default which will use the language/locale configured by the user's device.
+     *
+     * This is used to:
+     *   - Render the abbreviation of a weekday for this [Locale]
+     *   - Render the first day of the week for this [Locale]
+     *
+     * @return the current locale being used
+     */
+    var locale: Locale = Locale.getDefault()
+        set(newLocale) {
+            val currentSelections = selectedDays
+            field = newLocale
+            firstDayOfWeek = Weekday.getFirstDayOfWeekFor(locale = newLocale)
+
+            localizeLabels()
+            setDaysIgnoringListenersAndSelectionMode(daysToSelect = currentSelections)
+        }
+
+    /**
      * Returns a list of the currently selected [Weekday]s
      */
     val selectedDays: List<Weekday>
@@ -72,9 +92,7 @@ class MaterialDayPicker @JvmOverloads constructor(
             .filter { (toggle, _) -> toggle.isChecked }
             .map { (_, weekday) -> weekday }
 
-    private val locale: Locale = Locale.getDefault()
-
-    private val firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
+    private var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
 
     private val dayToggles = mutableListOf<ToggleButton>()
 
@@ -225,14 +243,23 @@ class MaterialDayPicker @JvmOverloads constructor(
             add(toggle_6)
         }
 
+        localizeLabels()
+    }
+
+    private fun localizeLabels() {
+        ignoreToggleEvents()
+
         forEachToggleAndWeekday { toggle, weekday ->
             toggle.withLocalizedLabel(weekday)
         }
+
+        listenToToggleEvents()
     }
 
     private fun ToggleButton.withLocalizedLabel(weekday: Weekday): ToggleButton {
-        textOn = weekday.abbreviation
-        textOff = weekday.abbreviation
+        val abbreviation = weekday.getAbbreviationFor(locale)
+        textOn = abbreviation
+        textOff = abbreviation
         isChecked = false // we will restore the button state in onRestoreInstanceState
         return this
     }
@@ -296,10 +323,14 @@ class MaterialDayPicker @JvmOverloads constructor(
     }
 
     private fun clearSelectionIgnoringSelectionMode() {
+        setDaysIgnoringListenersAndSelectionMode(daysToSelect = emptyList())
+    }
+
+    private fun setDaysIgnoringListenersAndSelectionMode(daysToSelect: List<Weekday>) {
         ignoreToggleEvents()
 
-        for (dayToggle in dayToggles) {
-            dayToggle.isChecked = false
+        forEachToggleAndWeekday { toggle, weekday ->
+            toggle.isChecked = weekday in daysToSelect
         }
 
         listenToToggleEvents()
@@ -360,25 +391,27 @@ class MaterialDayPicker @JvmOverloads constructor(
          *     Weekday.MONDAY.abbreviation == "M"
          *     Weekday.THURSDAY.abbreviation == "T"
          * ```
+         *
+         * @param locale the locale which the abbreviation should be translated for
+         * @return The abbreviation as a string
          */
-        val abbreviation: String
-            get() {
-                val dayOfWeek = when (this) {
-                    SUNDAY -> Calendar.SUNDAY
-                    MONDAY -> Calendar.MONDAY
-                    TUESDAY -> Calendar.TUESDAY
-                    WEDNESDAY -> Calendar.WEDNESDAY
-                    THURSDAY -> Calendar.THURSDAY
-                    FRIDAY -> Calendar.FRIDAY
-                    SATURDAY -> Calendar.SATURDAY
-                }
-
-                val calendar = Calendar.getInstance().apply {
-                    set(Calendar.DAY_OF_WEEK, dayOfWeek)
-                }
-
-                return SimpleDateFormat("EEEEE", Locale.getDefault()).format(calendar.time)
+        fun getAbbreviationFor(locale: Locale): String {
+            val dayOfWeek = when (this) {
+                SUNDAY -> Calendar.SUNDAY
+                MONDAY -> Calendar.MONDAY
+                TUESDAY -> Calendar.TUESDAY
+                WEDNESDAY -> Calendar.WEDNESDAY
+                THURSDAY -> Calendar.THURSDAY
+                FRIDAY -> Calendar.FRIDAY
+                SATURDAY -> Calendar.SATURDAY
             }
+
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.DAY_OF_WEEK, dayOfWeek)
+            }
+
+            return SimpleDateFormat("EEEEE", locale).format(calendar.time)
+        }
 
         companion object {
             operator fun get(index: Int): Weekday {

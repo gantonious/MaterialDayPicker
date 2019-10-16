@@ -1,8 +1,11 @@
 package ca.antonious.materialdaypicker
 
 import android.content.Context
+import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
@@ -249,19 +252,56 @@ class MaterialDayPicker @JvmOverloads constructor(
     private fun localizeLabels() {
         ignoreToggleEvents()
 
+        val scaledTextSize = getTextSizeForLocale(locale)
+
         forEachToggleAndWeekday { toggle, weekday ->
-            toggle.withLocalizedLabel(weekday)
+            toggle.withLocalizedLabel(weekday, scaledTextSize)
         }
 
         listenToToggleEvents()
     }
 
-    private fun ToggleButton.withLocalizedLabel(weekday: Weekday): ToggleButton {
+    private fun ToggleButton.withLocalizedLabel(weekday: Weekday, textSize: Float): ToggleButton {
         val abbreviation = weekday.getAbbreviationFor(locale)
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
         textOn = abbreviation
         textOff = abbreviation
         isChecked = false // we will restore the button state in onRestoreInstanceState
         return this
+    }
+
+    private fun getTextSizeForLocale(locale: Locale): Float {
+        val toggleButtonWidth = resources.getDimension(R.dimen.day_button_size)
+        val maxTextSize = resources.getDimension(R.dimen.day_button_max_font_size)
+
+        val paint = Paint().apply {
+            textSize = maxTextSize
+        }
+
+        // Get the max text width for all of the abbreviations for this locale. So that
+        // we can use the same scaled text size for all buttons.
+        val maxTextWidth = Weekday.allDays.map { weekday ->
+            val abbreviation = weekday.getAbbreviationFor(locale)
+            val outRect = Rect()
+            paint.getTextBounds(abbreviation, 0, abbreviation.length, outRect)
+            outRect.width()
+        }.max() ?: 0
+
+        return if (maxTextWidth < toggleButtonWidth) {
+            // The max text width is less than the button width so we don't need to do any scaling
+            maxTextSize
+        } else {
+            val buttonSafeArea = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                4f,
+                resources.displayMetrics
+            )
+
+            // We scale down the original font size by multiplying it with the ratio
+            // of button size to text size. We add a bit of safe area to avoid rendering to the edge
+            // of the button.
+            maxTextSize * ((toggleButtonWidth - buttonSafeArea * 2) / maxTextWidth)
+        }
     }
 
     private fun listenToToggleEvents() {

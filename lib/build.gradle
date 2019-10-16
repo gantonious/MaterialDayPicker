@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.shopify.testify'
 apply from: ktlintPlugin
 
 android {
@@ -31,6 +32,10 @@ dependencies {
     implementation depends.androidx.ktx
     implementation depends.androidx.appCompatV7
 
+    androidTestImplementation depends.androidx.test.junit
+    androidTestImplementation depends.androidx.test.runner
+    androidTestImplementation depends.androidx.test.rules
+
     testImplementation depends.junit
 }
 
@@ -41,4 +46,8 @@ publish {
     website = rootProject.ext.bintray.website
     artifactId = 'materialdaypicker'
     desc = 'An elegant day of the week picker inspired by Android\'s clock app.'
+}
+
+testify {
+    applicationPackageId "ca.antonious.materialdaypicker.test"
 }

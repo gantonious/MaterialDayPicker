@@ -10,10 +10,10 @@ Inspired by the day picker in the builtin Android clock app:
 
 
 ## Features
-- 🎨Customizable theming
-- ✅Easy to use API/hooks
-- 🌎Fully localized
-- 👻Supports dark mode
+- 🎨 Customizable theming
+- ✅ Easy to use API/hooks
+- 🌎 Fully localized
+- 👻 Supports dark mode
 
 ## What's New: Version 0.6.0 - Handle Device Configuration
 

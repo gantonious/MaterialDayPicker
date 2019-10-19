@@ -80,11 +80,16 @@ class MaterialDayPicker @JvmOverloads constructor(
     var locale: Locale = Locale.getDefault()
         set(newLocale) {
             val currentSelections = selectedDays
+            val currentDisabledDays = disabledDays
+
             field = newLocale
             firstDayOfWeek = Weekday.getFirstDayOfWeekFor(locale = newLocale)
 
             localizeLabels()
             setDaysIgnoringListenersAndSelectionMode(daysToSelect = currentSelections)
+
+            enableAllDays()
+            disableDays(currentDisabledDays)
         }
 
     /**
@@ -93,6 +98,14 @@ class MaterialDayPicker @JvmOverloads constructor(
     val selectedDays: List<Weekday>
         get() = getDayTogglesMatchedWithWeekday()
             .filter { (toggle, _) -> toggle.isChecked }
+            .map { (_, weekday) -> weekday }
+
+    /**
+     * Returns a list of the currently disabled [Weekday]s
+     */
+    val disabledDays: List<Weekday>
+        get() = getDayTogglesMatchedWithWeekday()
+            .filterNot { (toggle, _) -> toggle.isEnabled }
             .map { (_, weekday) -> weekday }
 
     private var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
@@ -111,7 +124,8 @@ class MaterialDayPicker @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable? {
         return SavedStateData(
             superState = super.onSaveInstanceState(),
-            selectedDays = selectedDays
+            selectedDays = selectedDays,
+            disableDays = disabledDays
         )
     }
 
@@ -130,6 +144,8 @@ class MaterialDayPicker @JvmOverloads constructor(
         }
 
         setDaysIgnoringListenersAndSelectionMode(savedStateData.selectedDays)
+        enableAllDays()
+        disableDays(savedStateData.disableDays)
     }
 
     /**
@@ -157,6 +173,13 @@ class MaterialDayPicker @JvmOverloads constructor(
      */
     fun deselectDay(weekday: Weekday) {
         handleDeselection(weekday)
+    }
+
+    /**
+     * Selects all days of the week.
+     */
+    fun selectAllDays() {
+        Weekday.allDays.forEach { selectDay(it) }
     }
 
     /**
@@ -189,6 +212,88 @@ class MaterialDayPicker @JvmOverloads constructor(
         disableListenerWhileExecuting {
             selectedDays.forEach { deselectDay(it) }
         }
+    }
+
+    /**
+     * Set's the enabled state for the toggle corresponding to [day]
+     * to [isSelected]. If [isEnabled] is set to false the day will be
+     * locked to it's last state.
+     *
+     * @param day the day to enabled/disable
+     * @param isEnabled should the day be toggleable
+     */
+    fun setDayEnabled(day: Weekday, isEnabled: Boolean) {
+        getToggleFor(day).isEnabled = isEnabled
+    }
+
+    /**
+     * Enables the toggle for the [dayToEnable]
+     *
+     * @see setDayEnabled
+     * @param dayToEnable the day that should be enabled
+     */
+    fun enableDay(dayToEnable: Weekday) {
+        setDayEnabled(day = dayToEnable, isEnabled = true)
+    }
+
+    /**
+     * Disables the toggle for the [dayToDisable]
+     *
+     * @see setDayEnabled
+     * @param dayToDisable the day that should be disabled
+     */
+    fun disableDay(dayToDisable: Weekday) {
+        setDayEnabled(day = dayToDisable, isEnabled = false)
+    }
+
+    /**
+     * Enables the toggles for all days in [daysToEnable]
+     *
+     * @see setDayEnabled
+     * @param daysToEnable a list of days that should be enabled
+     */
+    fun enabledDays(daysToEnable: List<Weekday>) {
+        daysToEnable.forEach { enableDay(it) }
+    }
+
+    /**
+     * Disables the toggles for all days in [daysToDisable]
+     *
+     * @see setDayEnabled
+     * @param daysToDisable a list of days that should be disabled
+     */
+    fun disableDays(daysToDisable: List<Weekday>) {
+        daysToDisable.forEach { disableDay(it) }
+    }
+
+    /**
+     * Disables all days from being pressed.
+     *
+     * @see setDayEnabled
+     */
+    fun disableAllDays() {
+        Weekday.allDays.forEach { disableDay(it) }
+    }
+
+    /**
+     * Enables all days to be pressed.
+     */
+    fun enableAllDays() {
+        Weekday.allDays.forEach { enableDay(it) }
+    }
+
+    /**
+     * Disables all weekend days.
+     */
+    fun disableWeekends() {
+        Weekday.weekendDays.forEach { disableDay(it) }
+    }
+
+    /**
+     * Disables all weekday days.
+     */
+    fun disableWeekdays() {
+        Weekday.weekdayDays.forEach { disableDay(it) }
     }
 
     /**
@@ -457,6 +562,10 @@ class MaterialDayPicker @JvmOverloads constructor(
             val allDays: List<Weekday>
                 get() = Weekday.values().toList()
 
+            val weekendDays = listOf(SATURDAY, SUNDAY)
+
+            val weekdayDays = allDays - weekendDays
+
             /**
              * Gets a list of [Weekday]s starting with the first day of the week
              * for a given [locale]
@@ -524,6 +633,7 @@ class MaterialDayPicker @JvmOverloads constructor(
     @Parcelize
     private data class SavedStateData(
         val superState: Parcelable?,
-        val selectedDays: List<Weekday>
+        val selectedDays: List<Weekday>,
+        val disableDays: List<Weekday>
     ) : Parcelable
 }

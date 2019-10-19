@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +48,15 @@ public class JavaSampleActivity extends AppCompatActivity {
         });
 
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY);
+
+        final MaterialDayPicker enabledDaysPicker = findViewById(R.id.enabledDaysSelector);
+        enabledDaysPicker.selectAllDays();
+        enabledDaysPicker.setDayPressedListener(new MaterialDayPicker.DayPressedListener() {
+            @Override
+            public void onDayPressed(@NotNull MaterialDayPicker.Weekday weekday, boolean isSelected) {
+                materialDayPicker.setDayEnabled(weekday, isSelected);
+            }
+        });
 
         Button clearButton = findViewById(R.id.clearButton);
         clearButton.setOnClickListener(new View.OnClickListener() {

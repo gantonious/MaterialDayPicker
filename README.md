@@ -18,14 +18,14 @@ Inspired by the day picker in the builtin Android clock app:
 ## What's New: Version 0.6.0 - Handle Device Configuration
 
 **Localization**
-- Added device locale support. The day toggles are now rendered in the device language and the first toggle will match the first day of the week for the locale.
-- If matching device locale is not desired the locale can be overriden using `materialDayPicker.local = ...`.
+- Added device locale support. The day toggles are now rendered in the device's language and the first toggle will match the first day of the week for the device's locale.
+- If using the device locale is not desired, the locale can be overridden using `materialDayPicker.local = ...`.
 
 **Dark Mode Support**
-- Added night mode color assets.
+- Added default night mode color assets.
 
 **Configuration Improvements**
-- Default colours are now based on the apps `colorPrimary` and `colorPrimaryDark` color values.
+- Default colours are now based on the app's `colorPrimary` and `colorPrimaryDark` color values.
 - Text color can now be customized for both selected/deselected states by overriding the `daySelectedTextColor` and `dayDeselectedTextColor` colors respectively.
 
 Download the latest version by adding the following to your project's `build.gradle` file:

@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="dayPressed">#EEEEEE</color>
+
     <color name="daySelected">@android:color/white</color>
-    <color name="dayDeselected">#303030</color>
     <color name="daySelectedTextColor">@android:color/black</color>
+
+    <color name="dayDeselected">#303030</color>
     <color name="dayDeselectedTextColor">@android:color/white</color>
+
+    <color name="daySelectedAndDisabled">@android:color/darker_gray</color>
+    <color name="daySelectedAndDisabledTextColor">@color/daySelectedTextColor</color>
+
+    <color name="dayDeselectedAndDisabled">@color/dayDeselected</color>
+    <color name="dayDeselectedAndDisabledTextColor">@android:color/darker_gray</color>
 </resources>

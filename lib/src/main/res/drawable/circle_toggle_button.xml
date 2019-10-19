@@ -2,16 +2,57 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     android:exitFadeDuration="@android:integer/config_shortAnimTime">
 
-    <item
-        android:state_pressed="true"
-        android:drawable="@drawable/circle_toggle_button_pressed"/>
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/dayPressed" />
+            <size
+                android:width="3dp"
+                android:height="3dp" />
+        </shape>
+    </item>
 
     <item
         android:state_checked="true"
-        android:drawable="@drawable/circle_toggle_button_down" />
+        android:state_enabled="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/daySelected" />
+            <size
+                android:width="3dp"
+                android:height="3dp" />
+        </shape>
+    </item>
+
+    <item
+        android:state_checked="true"
+        android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="@color/daySelectedAndDisabled" />
+            <size
+                android:width="3dp"
+                android:height="3dp" />
+        </shape>
+    </item>
 
     <item
         android:state_checked="false"
-        android:drawable="@drawable/circle_toggle_button_up" />
+        android:state_enabled="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/dayDeselected" />
+            <size
+                android:width="3dp"
+                android:height="3dp" />
+        </shape>
+    </item>
+
+    <item
+        android:state_checked="false"
+        android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="@color/dayDeselectedAndDisabled" />
+            <size
+                android:width="3dp"
+                android:height="3dp" />
+        </shape>
+    </item>
 
 </selector>

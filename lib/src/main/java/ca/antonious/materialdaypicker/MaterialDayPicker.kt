@@ -129,6 +129,8 @@ class MaterialDayPicker @JvmOverloads constructor(
             return
         }
 
+        ignoreToggleEvents()
+
         forEachToggleAndWeekday { toggleButton, weekday ->
             toggleButton.isChecked = weekday in savedStateData.selectedDays
         }

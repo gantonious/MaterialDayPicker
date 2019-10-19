@@ -111,7 +111,7 @@ class MaterialDayPicker @JvmOverloads constructor(
     override fun onSaveInstanceState(): Parcelable? {
         return SavedStateData(
             superState = super.onSaveInstanceState(),
-            selectedDays = selectedDays.toSet()
+            selectedDays = selectedDays
         )
     }
 
@@ -129,13 +129,7 @@ class MaterialDayPicker @JvmOverloads constructor(
             return
         }
 
-        ignoreToggleEvents()
-
-        forEachToggleAndWeekday { toggleButton, weekday ->
-            toggleButton.isChecked = weekday in savedStateData.selectedDays
-        }
-
-        listenToToggleEvents()
+        setDaysIgnoringListenersAndSelectionMode(savedStateData.selectedDays)
     }
 
     /**
@@ -530,6 +524,6 @@ class MaterialDayPicker @JvmOverloads constructor(
     @Parcelize
     private data class SavedStateData(
         val superState: Parcelable?,
-        val selectedDays: Set<Weekday>
+        val selectedDays: List<Weekday>
     ) : Parcelable
 }

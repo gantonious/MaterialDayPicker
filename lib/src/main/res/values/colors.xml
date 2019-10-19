@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dayPressed">#303F9F</color>
-    <color name="daySelected">#3F51B5</color>
-    <color name="dayDeselected">@android:color/darker_gray</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+
+    <color name="dayPressed">@color/colorPrimaryDark</color>
+    <color name="daySelected">@color/colorPrimary</color>
+    <color name="dayDeselected">#FAFAFA</color>
+    <color name="daySelectedTextColor">@android:color/white</color>
+    <color name="dayDeselectedTextColor">@android:color/black</color>
 </resources>

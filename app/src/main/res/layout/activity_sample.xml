@@ -8,7 +8,7 @@
 
     <ca.antonious.materialdaypicker.MaterialDayPicker
         android:id="@+id/dayPicker"
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +46,29 @@
         app:layout_constraintTop_toBottomOf="@+id/clearButton" />
 
     <TextView
+        android:id="@+id/override_locale_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/textPrimary"
+        android:text="Override Locale"
+        app:layout_constraintBottom_toBottomOf="@+id/locale_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/locale_spinner"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Spinner
+        android:id="@+id/locale_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/override_locale_label"
+        app:layout_constraintTop_toBottomOf="@+id/singleModeSwitch" />
+
+    <TextView
         android:id="@+id/event_log"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -55,7 +78,7 @@
         android:background="@android:color/black"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singleModeSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/locale_spinner"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Sample logs" />
 

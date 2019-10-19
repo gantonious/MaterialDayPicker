@@ -1,17 +1,26 @@
 package ca.antonious.materialdaypicker
 
 import android.content.Context
+import android.graphics.Paint
+import android.graphics.Rect
+import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.friday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.monday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.saturday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.sunday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.thursday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.tuesday_toggle
-import kotlinx.android.synthetic.main.day_of_the_week_picker.view.wednesday_toggle
+import java.lang.IllegalStateException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_0
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_1
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_2
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_3
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_4
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_5
+import kotlinx.android.synthetic.main.day_of_the_week_picker.view.toggle_6
 
 /**
  * An android widget that resembles the day of the week picker in the
@@ -22,7 +31,11 @@ import kotlinx.android.synthetic.main.day_of_the_week_picker.view.wednesday_togg
  *     daySelected - the color when a day is selected
  *     dayDeselected - the color when a day is deselected
  */
-class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+class MaterialDayPicker @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     /**
      * Gets/sets the current [DayPressedListener].
@@ -55,14 +68,34 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         }
 
     /**
+     * Gets/sets the current locale of the day picker. This is set to [Locale.getDefault]
+     * by default which will use the language/locale configured by the user's device.
+     *
+     * This is used to:
+     *   - Render the abbreviation of a weekday for this [Locale]
+     *   - Render the first day of the week for this [Locale]
+     *
+     * @return the current locale being used
+     */
+    var locale: Locale = Locale.getDefault()
+        set(newLocale) {
+            val currentSelections = selectedDays
+            field = newLocale
+            firstDayOfWeek = Weekday.getFirstDayOfWeekFor(locale = newLocale)
+
+            localizeLabels()
+            setDaysIgnoringListenersAndSelectionMode(daysToSelect = currentSelections)
+        }
+
+    /**
      * Returns a list of the currently selected [Weekday]s
      */
     val selectedDays: List<Weekday>
-        get() = dayToggles.asSequence()
-            .mapIndexed { index, button -> Pair(Weekday[index], button.isChecked) }
-            .filter { it.second }
-            .map { it.first }
-            .toList()
+        get() = getDayTogglesMatchedWithWeekday()
+            .filter { (toggle, _) -> toggle.isChecked }
+            .map { (_, weekday) -> weekday }
+
+    private var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
 
     private val dayToggles = mutableListOf<ToggleButton>()
 
@@ -73,6 +106,30 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         inflateLayoutUsing(context)
         bindViews()
         listenToToggleEvents()
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return SavedStateData(
+            superState = super.onSaveInstanceState(),
+            selectedDays = selectedDays
+        )
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        ignoreToggleEvents()
+        val savedStateData = state as? SavedStateData
+
+        super.onRestoreInstanceState(savedStateData?.superState)
+        post { restoreSelectionState(savedStateData) }
+    }
+
+    private fun restoreSelectionState(savedStateData: SavedStateData?) {
+        if (savedStateData == null) {
+            listenToToggleEvents()
+            return
+        }
+
+        setDaysIgnoringListenersAndSelectionMode(savedStateData.selectedDays)
     }
 
     /**
@@ -176,21 +233,76 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
 
     private fun bindViews() {
         dayToggles.apply {
-            add(sunday_toggle)
-            add(monday_toggle)
-            add(tuesday_toggle)
-            add(wednesday_toggle)
-            add(thursday_toggle)
-            add(friday_toggle)
-            add(saturday_toggle)
+            add(toggle_0)
+            add(toggle_1)
+            add(toggle_2)
+            add(toggle_3)
+            add(toggle_4)
+            add(toggle_5)
+            add(toggle_6)
+        }
+
+        localizeLabels()
+    }
+
+    private fun localizeLabels() {
+        ignoreToggleEvents()
+
+        val scaledTextSize = getTextSizeForLocale(locale)
+
+        forEachToggleAndWeekday { toggle, weekday ->
+            toggle.withLocalizedLabel(weekday, scaledTextSize)
+        }
+
+        listenToToggleEvents()
+    }
+
+    private fun ToggleButton.withLocalizedLabel(weekday: Weekday, textSize: Float): ToggleButton {
+        val abbreviation = weekday.getAbbreviationFor(locale)
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+        textOn = abbreviation
+        textOff = abbreviation
+        isChecked = false // we will restore the button state in onRestoreInstanceState
+        return this
+    }
+
+    private fun getTextSizeForLocale(locale: Locale): Float {
+        val toggleButtonWidth = resources.getDimension(R.dimen.day_button_size)
+        val maxTextSize = resources.getDimension(R.dimen.day_button_max_font_size)
+
+        val paint = Paint().apply {
+            textSize = maxTextSize
+        }
+
+        // Get the max text width for all of the abbreviations for this locale. So that
+        // we can use the same scaled text size for all buttons.
+        val maxTextWidth = Weekday.allDays.map { weekday ->
+            val abbreviation = weekday.getAbbreviationFor(locale)
+            val outRect = Rect()
+            paint.getTextBounds(abbreviation, 0, abbreviation.length, outRect)
+            outRect.width()
+        }.max() ?: 0
+
+        return if (maxTextWidth < toggleButtonWidth) {
+            // The max text width is less than the button width so we don't need to do any scaling
+            maxTextSize
+        } else {
+            val buttonSafeArea = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                4f,
+                resources.displayMetrics
+            )
+
+            // We scale down the original font size by multiplying it with the ratio
+            // of button size to text size. We add a bit of safe area to avoid rendering to the edge
+            // of the button.
+            maxTextSize * ((toggleButtonWidth - buttonSafeArea * 2) / maxTextWidth)
         }
     }
 
     private fun listenToToggleEvents() {
-        for (i in dayToggles.indices) {
-            val weekdayForToggle = Weekday[i]
-
-            dayToggles[i].setOnCheckedChangeListener { compoundButton, didGetChecked ->
+        forEachToggleAndWeekday { toggle, weekday ->
+            toggle.setOnCheckedChangeListener { compoundButton, didGetChecked ->
                 // temporally undo what the user just did so the selection mode
                 // can evaluate what it should do with the intended action
                 // the selection mode will generate the proper actions to
@@ -201,9 +313,9 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
                 listenToToggleEvents()
 
                 if (didGetChecked) {
-                    handleSelection(weekdayForToggle)
+                    handleSelection(weekday)
                 } else {
-                    handleDeselection(weekdayForToggle)
+                    handleDeselection(weekday)
                 }
             }
         }
@@ -247,10 +359,14 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun clearSelectionIgnoringSelectionMode() {
+        setDaysIgnoringListenersAndSelectionMode(daysToSelect = emptyList())
+    }
+
+    private fun setDaysIgnoringListenersAndSelectionMode(daysToSelect: List<Weekday>) {
         ignoreToggleEvents()
 
-        for (dayToggle in dayToggles) {
-            dayToggle.isChecked = false
+        forEachToggleAndWeekday { toggle, weekday ->
+            toggle.isChecked = weekday in daysToSelect
         }
 
         listenToToggleEvents()
@@ -266,8 +382,24 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         onDaySelectionChanged()
     }
 
+    private fun getDayTogglesMatchedWithWeekday(): List<Pair<ToggleButton, Weekday>> {
+        return dayToggles.zip(Weekday.getOrderedDaysOfWeek(locale = locale))
+    }
+
+    private fun forEachToggleAndWeekday(action: (toggleButton: ToggleButton, weekday: Weekday) -> Unit) {
+        getDayTogglesMatchedWithWeekday().forEach { (toggle, weekday) ->
+            action.invoke(toggle, weekday)
+        }
+    }
+
     private fun getToggleFor(weekday: Weekday): ToggleButton {
-        return dayToggles[weekday.ordinal]
+        var weekdayOffsetRelativeToWeekStartingOnSunday = weekday.ordinal - firstDayOfWeek.ordinal
+
+        if (weekdayOffsetRelativeToWeekStartingOnSunday < 0) {
+            weekdayOffsetRelativeToWeekStartingOnSunday += Weekday.values().size
+        }
+
+        return dayToggles[weekdayOffsetRelativeToWeekStartingOnSunday]
     }
 
     private fun onDaySelectionChanged() {
@@ -275,7 +407,7 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     /**
-     * Representation of
+     * A representation of a day of the week.
      */
     enum class Weekday {
         SUNDAY,
@@ -286,6 +418,37 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
         FRIDAY,
         SATURDAY;
 
+        /**
+         * Gets a localized abbreviation of this [Weekday].
+         *
+         * i.e. In an english based locale:
+         *
+         * ```kotlin
+         *     Weekday.MONDAY.abbreviation == "M"
+         *     Weekday.THURSDAY.abbreviation == "T"
+         * ```
+         *
+         * @param locale the locale which the abbreviation should be translated for
+         * @return The abbreviation as a string
+         */
+        fun getAbbreviationFor(locale: Locale): String {
+            val dayOfWeek = when (this) {
+                SUNDAY -> Calendar.SUNDAY
+                MONDAY -> Calendar.MONDAY
+                TUESDAY -> Calendar.TUESDAY
+                WEDNESDAY -> Calendar.WEDNESDAY
+                THURSDAY -> Calendar.THURSDAY
+                FRIDAY -> Calendar.FRIDAY
+                SATURDAY -> Calendar.SATURDAY
+            }
+
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.DAY_OF_WEEK, dayOfWeek)
+            }
+
+            return SimpleDateFormat("EEEEE", locale).format(calendar.time)
+        }
+
         companion object {
             operator fun get(index: Int): Weekday {
                 return Weekday.values()[index]
@@ -293,6 +456,41 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
 
             val allDays: List<Weekday>
                 get() = Weekday.values().toList()
+
+            /**
+             * Gets a list of [Weekday]s starting with the first day of the week
+             * for a given [locale]
+             *
+             * @param locale the locale to evaluate the first day for
+             * @return A list of [Weekday]s starting on the first day of
+             * the week for the given locale
+             */
+            fun getOrderedDaysOfWeek(locale: Locale): List<Weekday> {
+                val daysOfTheWeekStartingOnSunday = allDays
+                val firstDayOfWeek = getFirstDayOfWeekFor(locale = locale)
+                val indexOfFirstDay = daysOfTheWeekStartingOnSunday.indexOf(firstDayOfWeek)
+                val daysToMoveToEndOfWeek = daysOfTheWeekStartingOnSunday.take(indexOfFirstDay)
+                return daysOfTheWeekStartingOnSunday.drop(indexOfFirstDay) + daysToMoveToEndOfWeek
+            }
+
+            /**
+             * Gets the first day of the calendar week for a given [locale]
+             *
+             * @param locale the locale to evaluate the first day for
+             * @return The [Weekday] this week starts on for the given [locale]
+             */
+            fun getFirstDayOfWeekFor(locale: Locale = Locale.getDefault()): Weekday {
+                return when (val firstDayOfWeek = Calendar.getInstance(locale).firstDayOfWeek) {
+                    Calendar.SUNDAY -> SUNDAY
+                    Calendar.MONDAY -> MONDAY
+                    Calendar.TUESDAY -> TUESDAY
+                    Calendar.WEDNESDAY -> WEDNESDAY
+                    Calendar.THURSDAY -> THURSDAY
+                    Calendar.FRIDAY -> FRIDAY
+                    Calendar.SATURDAY -> SATURDAY
+                    else -> throw IllegalStateException("Failed to resolve first day of week matching $firstDayOfWeek")
+                }
+            }
         }
     }
 
@@ -322,4 +520,10 @@ class MaterialDayPicker @JvmOverloads constructor(context: Context, attrs: Attri
          */
         fun onDayPressed(weekday: Weekday, isSelected: Boolean)
     }
+
+    @Parcelize
+    private data class SavedStateData(
+        val superState: Parcelable?,
+        val selectedDays: List<Weekday>
+    ) : Parcelable
 }

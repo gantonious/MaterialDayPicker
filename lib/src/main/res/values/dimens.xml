@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="day_button_size">40dp</dimen>
+    <dimen name="day_button_max_font_size">22sp</dimen>
+</resources>

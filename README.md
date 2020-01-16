@@ -15,24 +15,17 @@ Inspired by the day picker in the builtin Android clock app:
 - 🌎 Fully localized
 - 👻 Supports dark mode
 
-## What's New: Version 0.6.0 - Handle Device Configuration
-
-**Localization**
-- Added device locale support. The day toggles are now rendered in the device's language and the first toggle will match the first day of the week for the device's locale.
-- If using the device locale is not desired, the locale can be overridden using `materialDayPicker.local = ...`.
-
-**Dark Mode Support**
-- Added default night mode color assets.
+## What's New: Version 0.7.0 - Better Configuration
 
 **Configuration Improvements**
-- Default colours are now based on the app's `colorPrimary` and `colorPrimaryDark` color values.
-- Text color can now be customized for both selected/deselected states by overriding the `daySelectedTextColor` and `dayDeselectedTextColor` colors respectively.
+- You can now enable/disable days from being selected using enableDay/disableDay methods. See more below.
+- You can now set the selection mode via xml by using the `app:selectionMode` attribute.
 
 Download the latest version by adding the following to your project's `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation 'ca.antonious:materialdaypicker:0.6.0'
+    implementation 'ca.antonious:materialdaypicker:0.7.0'
 }
 ```
 
@@ -67,6 +60,22 @@ If you want to only allow one day to be selected at a time you can do:
 materialDayPicker.selectionMode = SingleSelectionMode.create()
 ```
 
+This can also be set via xml using the `selectionMode` attribute:
+
+```xml
+<ca.antonious.materialdaypicker.MaterialDayPicker
+    ...
+    app:selectionMode="ca.antonious.materialdaypicker.SingleSelectionMode"/>
+```
+
+You can enable/disable days using the following methods. Note if you disable a day when it's selected it cannot be deselected:
+
+```kotlin
+materialDayPicker.enableDay(MaterialDayPicker.Weekday.Monday)
+materialDayPicker.disableDay(MaterialDayPicker.Weekday.Monday)
+materialDayPicker.setDayEnable(MaterialDayPicker.Weekday.Monday, isEnabled = false)
+```
+
 If you want to listen to whenever the day selection is changed you can use:
 
 ```kotlin
@@ -91,9 +100,15 @@ You can override these colors to change how MaterialDayPicker looks. You can als
 ```xml
 <color name="dayPressed">@color/colorPrimaryDark</color>
 <color name="daySelected">@color/colorPrimary</color>
-<color name="dayDeselected">#FAFAFA</color>
 <color name="daySelectedTextColor">@android:color/white</color>
+<color name="dayDeselected">#FAFAFA</color>
 <color name="dayDeselectedTextColor">@android:color/black</color>
+
+<!-- Customizing colors for disabled days-->
+<color name="daySelectedAndDisabled">#43444F</color>
+<color name="daySelectedAndDisabledTextColor">@color/daySelectedTextColor</color>
+<color name="dayDeselectedAndDisabled">@color/dayDeselected</color>
+<color name="dayDeselectedAndDisabledTextColor">@android:color/darker_gray</color>
 ```
 
 If you don't want to use the device's current locale you can override it by doing:

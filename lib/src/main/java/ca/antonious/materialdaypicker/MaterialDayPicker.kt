@@ -9,7 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
-import java.lang.IllegalStateException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -118,6 +118,7 @@ class MaterialDayPicker @JvmOverloads constructor(
     init {
         inflateLayoutUsing(context)
         bindViews()
+        bindAttributes(attrs)
         listenToToggleEvents()
     }
 
@@ -334,6 +335,43 @@ class MaterialDayPicker @JvmOverloads constructor(
 
     private fun inflateLayoutUsing(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.day_of_the_week_picker, this, true)
+    }
+
+    private fun bindAttributes(attrs: AttributeSet?) {
+        val typedAttributeArray = context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.MaterialDayPicker,
+            0,
+            0
+        )
+
+        typedAttributeArray.getString(R.styleable.MaterialDayPicker_selectionMode)?.let { selectionModeClassName ->
+            selectionMode = createSelectionMode(className = selectionModeClassName)
+        }
+
+        typedAttributeArray.recycle()
+    }
+
+    private fun createSelectionMode(className: String): SelectionMode {
+        val selectionModeClass = try {
+            Class.forName(className)
+        } catch (ex: ClassNotFoundException) {
+            throw IllegalArgumentException("Cannot find class for SelectionMode named '$className' set via xml. Make sure you are specifying the correct fully qualified class name (i.e ca.antonious.materialdaypicker.SingleSelectionMode).")
+        }
+
+        val constructor = try {
+            selectionModeClass.getConstructor()
+        } catch (ex: NoSuchMethodException) {
+            throw IllegalArgumentException("Cannot access constructor for SelectionMode named '$className' set via xml. Make sure the class is public and has a public constructor with no arguments. If you need arguments to instantiate your SelectionMode you must set it programmatically.")
+        }
+
+        val selectionModeInstance = try {
+            constructor.newInstance()
+        } catch (ex: Exception) {
+            throw IllegalArgumentException("Cannot create SelectionMode named '$className' set via xml due to: ${ex.message}.")
+        }
+
+        return selectionModeInstance as? SelectionMode ?: throw IllegalArgumentException("Cannot create Selection mode named '$className' set via xml since it does not extend ${SelectionMode::class.java.name}.")
     }
 
     private fun bindViews() {

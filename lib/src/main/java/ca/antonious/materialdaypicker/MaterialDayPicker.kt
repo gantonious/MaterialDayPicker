@@ -9,7 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
-import java.lang.IllegalStateException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -80,11 +80,16 @@ class MaterialDayPicker @JvmOverloads constructor(
     var locale: Locale = Locale.getDefault()
         set(newLocale) {
             val currentSelections = selectedDays
+            val currentDisabledDays = disabledDays
+
             field = newLocale
             firstDayOfWeek = Weekday.getFirstDayOfWeekFor(locale = newLocale)
 
             localizeLabels()
             setDaysIgnoringListenersAndSelectionMode(daysToSelect = currentSelections)
+
+            enableAllDays()
+            disableDays(currentDisabledDays)
         }
 
     /**
@@ -93,6 +98,14 @@ class MaterialDayPicker @JvmOverloads constructor(
     val selectedDays: List<Weekday>
         get() = getDayTogglesMatchedWithWeekday()
             .filter { (toggle, _) -> toggle.isChecked }
+            .map { (_, weekday) -> weekday }
+
+    /**
+     * Returns a list of the currently disabled [Weekday]s
+     */
+    val disabledDays: List<Weekday>
+        get() = getDayTogglesMatchedWithWeekday()
+            .filterNot { (toggle, _) -> toggle.isEnabled }
             .map { (_, weekday) -> weekday }
 
     private var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
@@ -105,13 +118,15 @@ class MaterialDayPicker @JvmOverloads constructor(
     init {
         inflateLayoutUsing(context)
         bindViews()
+        bindAttributes(attrs)
         listenToToggleEvents()
     }
 
     override fun onSaveInstanceState(): Parcelable? {
         return SavedStateData(
             superState = super.onSaveInstanceState(),
-            selectedDays = selectedDays
+            selectedDays = selectedDays,
+            disableDays = disabledDays
         )
     }
 
@@ -130,6 +145,8 @@ class MaterialDayPicker @JvmOverloads constructor(
         }
 
         setDaysIgnoringListenersAndSelectionMode(savedStateData.selectedDays)
+        enableAllDays()
+        disableDays(savedStateData.disableDays)
     }
 
     /**
@@ -157,6 +174,13 @@ class MaterialDayPicker @JvmOverloads constructor(
      */
     fun deselectDay(weekday: Weekday) {
         handleDeselection(weekday)
+    }
+
+    /**
+     * Selects all days of the week.
+     */
+    fun selectAllDays() {
+        Weekday.allDays.forEach { selectDay(it) }
     }
 
     /**
@@ -189,6 +213,88 @@ class MaterialDayPicker @JvmOverloads constructor(
         disableListenerWhileExecuting {
             selectedDays.forEach { deselectDay(it) }
         }
+    }
+
+    /**
+     * Set's the enabled state for the toggle corresponding to [day]
+     * to [isSelected]. If [isEnabled] is set to false the day will be
+     * locked to it's last state.
+     *
+     * @param day the day to enabled/disable
+     * @param isEnabled should the day be toggleable
+     */
+    fun setDayEnabled(day: Weekday, isEnabled: Boolean) {
+        getToggleFor(day).isEnabled = isEnabled
+    }
+
+    /**
+     * Enables the toggle for the [dayToEnable]
+     *
+     * @see setDayEnabled
+     * @param dayToEnable the day that should be enabled
+     */
+    fun enableDay(dayToEnable: Weekday) {
+        setDayEnabled(day = dayToEnable, isEnabled = true)
+    }
+
+    /**
+     * Disables the toggle for the [dayToDisable]
+     *
+     * @see setDayEnabled
+     * @param dayToDisable the day that should be disabled
+     */
+    fun disableDay(dayToDisable: Weekday) {
+        setDayEnabled(day = dayToDisable, isEnabled = false)
+    }
+
+    /**
+     * Enables the toggles for all days in [daysToEnable]
+     *
+     * @see setDayEnabled
+     * @param daysToEnable a list of days that should be enabled
+     */
+    fun enabledDays(daysToEnable: List<Weekday>) {
+        daysToEnable.forEach { enableDay(it) }
+    }
+
+    /**
+     * Disables the toggles for all days in [daysToDisable]
+     *
+     * @see setDayEnabled
+     * @param daysToDisable a list of days that should be disabled
+     */
+    fun disableDays(daysToDisable: List<Weekday>) {
+        daysToDisable.forEach { disableDay(it) }
+    }
+
+    /**
+     * Disables all days from being pressed.
+     *
+     * @see setDayEnabled
+     */
+    fun disableAllDays() {
+        Weekday.allDays.forEach { disableDay(it) }
+    }
+
+    /**
+     * Enables all days to be pressed.
+     */
+    fun enableAllDays() {
+        Weekday.allDays.forEach { enableDay(it) }
+    }
+
+    /**
+     * Disables all weekend days.
+     */
+    fun disableWeekends() {
+        Weekday.weekendDays.forEach { disableDay(it) }
+    }
+
+    /**
+     * Disables all weekday days.
+     */
+    fun disableWeekdays() {
+        Weekday.weekdayDays.forEach { disableDay(it) }
     }
 
     /**
@@ -229,6 +335,43 @@ class MaterialDayPicker @JvmOverloads constructor(
 
     private fun inflateLayoutUsing(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.day_of_the_week_picker, this, true)
+    }
+
+    private fun bindAttributes(attrs: AttributeSet?) {
+        val typedAttributeArray = context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.MaterialDayPicker,
+            0,
+            0
+        )
+
+        typedAttributeArray.getString(R.styleable.MaterialDayPicker_selectionMode)?.let { selectionModeClassName ->
+            selectionMode = createSelectionMode(className = selectionModeClassName)
+        }
+
+        typedAttributeArray.recycle()
+    }
+
+    private fun createSelectionMode(className: String): SelectionMode {
+        val selectionModeClass = try {
+            Class.forName(className)
+        } catch (ex: ClassNotFoundException) {
+            throw IllegalArgumentException("Cannot find class for SelectionMode named '$className' set via xml. Make sure you are specifying the correct fully qualified class name (i.e ca.antonious.materialdaypicker.SingleSelectionMode).")
+        }
+
+        val constructor = try {
+            selectionModeClass.getConstructor()
+        } catch (ex: NoSuchMethodException) {
+            throw IllegalArgumentException("Cannot access constructor for SelectionMode named '$className' set via xml. Make sure the class is public and has a public constructor with no arguments. If you need arguments to instantiate your SelectionMode you must set it programmatically.")
+        }
+
+        val selectionModeInstance = try {
+            constructor.newInstance()
+        } catch (ex: Exception) {
+            throw IllegalArgumentException("Cannot create SelectionMode named '$className' set via xml due to: ${ex.message}.")
+        }
+
+        return selectionModeInstance as? SelectionMode ?: throw IllegalArgumentException("Cannot create Selection mode named '$className' set via xml since it does not extend ${SelectionMode::class.java.name}.")
     }
 
     private fun bindViews() {
@@ -457,6 +600,10 @@ class MaterialDayPicker @JvmOverloads constructor(
             val allDays: List<Weekday>
                 get() = Weekday.values().toList()
 
+            val weekendDays = listOf(SATURDAY, SUNDAY)
+
+            val weekdayDays = allDays - weekendDays
+
             /**
              * Gets a list of [Weekday]s starting with the first day of the week
              * for a given [locale]
@@ -524,6 +671,7 @@ class MaterialDayPicker @JvmOverloads constructor(
     @Parcelize
     private data class SavedStateData(
         val superState: Parcelable?,
-        val selectedDays: List<Weekday>
+        val selectedDays: List<Weekday>,
+        val disableDays: List<Weekday>
     ) : Parcelable
 }

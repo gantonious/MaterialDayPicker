@@ -12,6 +12,7 @@ import ca.antonious.materialdaypicker.SingleSelectionMode
 import kotlinx.android.synthetic.main.activity_sample.clearButton
 import kotlinx.android.synthetic.main.activity_sample.clearLogButton
 import kotlinx.android.synthetic.main.activity_sample.dayPicker
+import kotlinx.android.synthetic.main.activity_sample.enabledDaysSelector
 import kotlinx.android.synthetic.main.activity_sample.event_log
 import kotlinx.android.synthetic.main.activity_sample.locale_spinner
 import kotlinx.android.synthetic.main.activity_sample.singleModeSwitch
@@ -31,6 +32,12 @@ class KotlinSampleActivity : AppCompatActivity() {
         materialDayPicker.setDayPressedListener { weekday, isSelected ->
             appendLog("[DayPressedListener] $weekday is selected: $isSelected")
         }
+
+        enabledDaysSelector.setDayPressedListener { weekday, isSelected ->
+            materialDayPicker.setDayEnabled(weekday, isSelected)
+        }
+
+        enabledDaysSelector.selectAllDays()
 
         materialDayPicker.setSelectedDays(MaterialDayPicker.Weekday.MONDAY)
 
@@ -60,7 +67,6 @@ class KotlinSampleActivity : AppCompatActivity() {
                 materialDayPicker.locale = allLocales[position]
             }
         }
-
     }
 
     private fun appendLog(log: String) {

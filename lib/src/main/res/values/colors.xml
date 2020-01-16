@@ -4,8 +4,16 @@
     <color name="colorPrimaryDark">#303F9F</color>
 
     <color name="dayPressed">@color/colorPrimaryDark</color>
+
     <color name="daySelected">@color/colorPrimary</color>
-    <color name="dayDeselected">#FAFAFA</color>
     <color name="daySelectedTextColor">@android:color/white</color>
+
+    <color name="dayDeselected">#FAFAFA</color>
     <color name="dayDeselectedTextColor">@android:color/black</color>
+
+    <color name="daySelectedAndDisabled">#43444F</color>
+    <color name="daySelectedAndDisabledTextColor">@color/daySelectedTextColor</color>
+
+    <color name="dayDeselectedAndDisabled">@color/dayDeselected</color>
+    <color name="dayDeselectedAndDisabledTextColor">@android:color/darker_gray</color>
 </resources>

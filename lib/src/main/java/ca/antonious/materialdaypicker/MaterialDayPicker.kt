@@ -200,10 +200,12 @@ class MaterialDayPicker @JvmOverloads constructor(
      * @param weekdays days to select
      */
     fun setSelectedDays(weekdays: List<Weekday>) {
-        disableListenerWhileExecuting {
-            clearSelection()
-            weekdays.forEach { selectDay(it) }
-        }
+        val selectionDifference = selectionDifferenceOf(
+            initialSelectionState = SelectionState(selectedDays),
+            finalSelectionState = SelectionState(weekdays)
+        )
+
+        applySelectionChangesUsing(selectionDifference)
     }
 
     /**

@@ -24,7 +24,7 @@ buildscript {
             'junit' : '4.12',
             'bintrayRelease' : '0.9.1',
             'android' : [
-                'gradleVersion' : '3.5.3',
+                'gradleVersion' : '3.6.1',
             ],
             // https://developer.android.com/jetpack/androidx/versions
             'androidx' : [

@@ -11,7 +11,7 @@ buildscript {
         bintray = [
             'userOrg' : 'gantonious',
             'groupId' : 'ca.antonious',
-            'publishVersion' : '0.7.1',
+            'publishVersion' : '0.7.2',
             'website' : "https://github.com/gantonious/MaterialDayPicker"
         ]
 
@@ -24,7 +24,7 @@ buildscript {
             'junit' : '4.12',
             'bintrayRelease' : '0.9.1',
             'android' : [
-                'gradleVersion' : '3.5.3',
+                'gradleVersion' : '3.6.1',
             ],
             // https://developer.android.com/jetpack/androidx/versions
             'androidx' : [

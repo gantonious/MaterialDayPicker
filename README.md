@@ -15,7 +15,12 @@ Inspired by the day picker in the builtin Android clock app:
 - 🌎 Fully localized
 - 👻 Supports dark mode
 
-## What's New: Version 0.7.1 - Better Configuration + Bug fixes
+## What's New: Version 0.7.2 - Better Configuration + Bug fixes
+
+**Bug fixes**
+- Fixes a bug when using android gradle plugin `3.6.1` that would cause building to fail due to not being able to find the `selectionMode` attribute.
+
+### Changes from 0.7.1
 
 **Bug fixes**
 - Fixes an issue where calling `setSelectedDays` would cause selected days to flash off and on.
@@ -30,7 +35,7 @@ Download the latest version by adding the following to your project's `build.gra
 
 ```groovy
 dependencies {
-    implementation 'ca.antonious:materialdaypicker:0.7.1'
+    implementation 'ca.antonious:materialdaypicker:0.7.2'
 }
 ```
 

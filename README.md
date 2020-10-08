@@ -15,7 +15,11 @@ Inspired by the day picker in the builtin Android clock app:
 - 🌎 Fully localized
 - 👻 Supports dark mode
 
-## What's New: Version 0.7.2 - Better Configuration + Bug fixes
+## What's New: Version 0.7.3 - Better Configuration + Bug fixes
+
+- Upgraded MaterialDayPicker to target API 30 and upgraded its AndroidX dependencies
+
+### Changes from 0.7.2
 
 **Bug fixes**
 - Fixes a bug when using android gradle plugin `3.6.1` that would cause building to fail due to not being able to find the `selectionMode` attribute.
@@ -35,7 +39,7 @@ Download the latest version by adding the following to your project's `build.gra
 
 ```groovy
 dependencies {
-    implementation 'ca.antonious:materialdaypicker:0.7.2'
+    implementation 'ca.antonious:materialdaypicker:0.7.3'
 }
 ```
 

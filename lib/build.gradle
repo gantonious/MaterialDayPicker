@@ -30,6 +30,7 @@ dependencies {
     implementation depends.kotlin.stdlib
     implementation depends.androidx.ktx
     implementation depends.androidx.appCompatV7
+    implementation depends.androidx.core
 
     testImplementation depends.junit
 }

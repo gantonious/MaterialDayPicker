@@ -2,12 +2,14 @@
 
 [![CircleCI](https://circleci.com/gh/gantonious/MaterialDayPicker.svg?style=svg)](https://circleci.com/gh/gantonious/MaterialDayPicker) [![Download](https://api.bintray.com/packages/gantonious/maven/materialdaypicker/images/download.svg)](https://bintray.com/gantonious/maven/materialdaypicker/_latestVersion)
 
-Inspired by the day picker in the builtin Android clock app:
+
+Inspired by the day picker in the builtin Android clock app. 
+
+**Note:** I'm not actively working on new features for this library. I'm only addressing critical bugs. With that being said contributions for new features are more than welcome and I am available to review pull requests. See [contributing.md](https://github.com/gantonious/MaterialDayPicker/blob/dev/CONTRIBUTING.md) if you're interested in contributing.
 
 |Normal Usage|Localized Usage|Dark Mode Usage|
 |---|---|---|
 |![Default Usage](screenshots/default_usage.gif)|![Localized Usage](screenshots/localized_usage.gif)|![Dark Mode Usage](screenshots/dark_mode_usage.gif)|
-
 
 ## Features
 - 🎨 Customizable theming

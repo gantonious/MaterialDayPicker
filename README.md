@@ -133,6 +133,12 @@ If you don't want to use the device's current locale you can override it by doin
 materialDayPicker.locale = Locale.ENGLISH // or any other locale
 ```
 
+If you want to specify the first day of the week explicitly:
+
+```kotlin
+materialDayPicker.firstDayOfWeek = MaterialDayPicker.Weekday.MONDAY // or any other day
+```
+
 ## License
 
 ```

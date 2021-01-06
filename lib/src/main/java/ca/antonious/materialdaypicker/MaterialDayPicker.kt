@@ -9,7 +9,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.ToggleButton
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -75,6 +74,9 @@ class MaterialDayPicker @JvmOverloads constructor(
      *   - Render the abbreviation of a weekday for this [Locale]
      *   - Render the first day of the week for this [Locale]
      *
+     * Note: Setting a new locale will reset any custom [firstDayOfWeek] that may
+     * have been set before.
+     *
      * @return the current locale being used
      */
     var locale: Locale = Locale.getDefault()
@@ -108,7 +110,28 @@ class MaterialDayPicker @JvmOverloads constructor(
             .filterNot { (toggle, _) -> toggle.isEnabled }
             .map { (_, weekday) -> weekday }
 
-    private var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
+    /**
+     * Gets/sets the current first day of the week of the day picker. This is set based on
+     * [locale] by default which will use the locale configured by the user's device.
+     *
+     * Note: Setting a new locale via [locale] will reset any custom [firstDayOfWeek] that may
+     * have been set before.
+     *
+     * @return the current first day of the week being used
+     */
+    var firstDayOfWeek: Weekday = Weekday.getFirstDayOfWeekFor(locale = locale)
+        set(newFirstDayOfWeek) {
+            val currentSelections = selectedDays
+            val currentDisabledDays = disabledDays
+
+            field = newFirstDayOfWeek
+
+            localizeLabels()
+            setDaysIgnoringListenersAndSelectionMode(daysToSelect = currentSelections)
+
+            enableAllDays()
+            disableDays(currentDisabledDays)
+        }
 
     private val dayToggles = mutableListOf<ToggleButton>()
 
@@ -373,7 +396,8 @@ class MaterialDayPicker @JvmOverloads constructor(
             throw IllegalArgumentException("Cannot create SelectionMode named '$className' set via xml due to: ${ex.message}.")
         }
 
-        return selectionModeInstance as? SelectionMode ?: throw IllegalArgumentException("Cannot create Selection mode named '$className' set via xml since it does not extend ${SelectionMode::class.java.name}.")
+        return selectionModeInstance as? SelectionMode
+            ?: throw IllegalArgumentException("Cannot create Selection mode named '$className' set via xml since it does not extend ${SelectionMode::class.java.name}.")
     }
 
     private fun bindViews() {
@@ -528,7 +552,7 @@ class MaterialDayPicker @JvmOverloads constructor(
     }
 
     private fun getDayTogglesMatchedWithWeekday(): List<Pair<ToggleButton, Weekday>> {
-        return dayToggles.zip(Weekday.getOrderedDaysOfWeek(locale = locale))
+        return dayToggles.zip(Weekday.getOrderedDaysOfWeek(firstDayOfWeek))
     }
 
     private fun forEachToggleAndWeekday(action: (toggleButton: ToggleButton, weekday: Weekday) -> Unit) {
@@ -615,8 +639,18 @@ class MaterialDayPicker @JvmOverloads constructor(
              * the week for the given locale
              */
             fun getOrderedDaysOfWeek(locale: Locale): List<Weekday> {
+                return getOrderedDaysOfWeek(getFirstDayOfWeekFor(locale))
+            }
+
+            /**
+             * Gets a list of [Weekday]s starting with the provided [firstDayOfWeek]
+             *
+             * @param firstDayOfWeek the first week day to use
+             * @return A list of [Weekday]s starting on the first day of
+             * the week for the given locale
+             */
+            fun getOrderedDaysOfWeek(firstDayOfWeek: Weekday): List<Weekday> {
                 val daysOfTheWeekStartingOnSunday = allDays
-                val firstDayOfWeek = getFirstDayOfWeekFor(locale = locale)
                 val indexOfFirstDay = daysOfTheWeekStartingOnSunday.indexOf(firstDayOfWeek)
                 val daysToMoveToEndOfWeek = daysOfTheWeekStartingOnSunday.take(indexOfFirstDay)
                 return daysOfTheWeekStartingOnSunday.drop(indexOfFirstDay) + daysToMoveToEndOfWeek

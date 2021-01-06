@@ -11,7 +11,7 @@ buildscript {
         bintray = [
             'userOrg' : 'gantonious',
             'groupId' : 'ca.antonious',
-            'publishVersion' : '0.7.3',
+            'publishVersion' : '0.7.4',
             'website' : "https://github.com/gantonious/MaterialDayPicker"
         ]
 

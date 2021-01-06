@@ -59,18 +59,24 @@ class KotlinSampleActivity : AppCompatActivity() {
         }
 
         val allLocales = Locale.getAvailableLocales()
+        val defaultLocale = Locale.getDefault()
+
+        val allWeekdays = MaterialDayPicker.Weekday.values()
+        val defaultFirstDayOfWeek = MaterialDayPicker.Weekday.getFirstDayOfWeekFor(defaultLocale)
+
         locale_spinner.adapter = ArrayAdapter(this, R.layout.spinner_text_view, allLocales)
-        locale_spinner.setSelection(allLocales.indexOf(Locale.getDefault()))
+        locale_spinner.setSelection(allLocales.indexOf(defaultLocale))
 
         locale_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                materialDayPicker.locale = allLocales[position]
+                val selectedLocale = allLocales[position]
+                materialDayPicker.locale = selectedLocale
+
+                val firstDayOfWeekForSelectedLocale = MaterialDayPicker.Weekday.getFirstDayOfWeekFor(selectedLocale)
+                first_day_of_week_spinner.setSelection(allWeekdays.indexOf(firstDayOfWeekForSelectedLocale))
             }
         }
-
-        val allWeekdays = MaterialDayPicker.Weekday.values()
-        val defaultFirstDayOfWeek = MaterialDayPicker.Weekday.getFirstDayOfWeekFor(Locale.getDefault())
 
         first_day_of_week_spinner.adapter = ArrayAdapter(this, R.layout.spinner_text_view, allWeekdays)
         first_day_of_week_spinner.setSelection(allWeekdays.indexOf(defaultFirstDayOfWeek))

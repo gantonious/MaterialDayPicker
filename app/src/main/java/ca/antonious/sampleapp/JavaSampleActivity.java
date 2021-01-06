@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -86,15 +87,25 @@ public class JavaSampleActivity extends AppCompatActivity {
             }
         });
 
-        final Locale[] allLocales = Locale.getAvailableLocales();
-        Spinner localeSpinner = findViewById(R.id.locale_spinner);
+        final List<Locale> allLocales = Arrays.asList(Locale.getAvailableLocales());
+        Locale defaultLocale = Locale.getDefault();
+
+        final List<MaterialDayPicker.Weekday> allWeekdays = Arrays.asList(MaterialDayPicker.Weekday.values());
+        MaterialDayPicker.Weekday defaultFirstDayOfWeek = MaterialDayPicker.Weekday.Companion.getFirstDayOfWeekFor(defaultLocale);
+
+        final Spinner localeSpinner = findViewById(R.id.locale_spinner);
+        final Spinner firstDayOfWeekSpinner = findViewById(R.id.first_day_of_week_spinner);
 
         localeSpinner.setAdapter(new ArrayAdapter<Locale>(this, R.layout.spinner_text_view, allLocales));
 
         localeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                materialDayPicker.setLocale(allLocales[position]);
+                Locale selectedLocale = allLocales.get(position);
+                materialDayPicker.setLocale(selectedLocale);
+
+                MaterialDayPicker.Weekday firstDayOfWeekForSelectedLocale = MaterialDayPicker.Weekday.Companion.getFirstDayOfWeekFor(selectedLocale);
+                firstDayOfWeekSpinner.setSelection(allWeekdays.indexOf(firstDayOfWeekForSelectedLocale));
             }
 
             @Override
@@ -103,25 +114,14 @@ public class JavaSampleActivity extends AppCompatActivity {
             }
         });
 
-        int localePosition = 0;
-
-        for (Locale locale : allLocales) {
-            if (locale.equals(Locale.getDefault())) {
-                localeSpinner.setSelection(localePosition);
-                break;
-            }
-            localePosition++;
-        }
-
-        final MaterialDayPicker.Weekday[] allWeekdays = MaterialDayPicker.Weekday.values();
-        Spinner firstDayOfWeekSpinner = findViewById(R.id.first_day_of_week_spinner);
+        localeSpinner.setSelection(allLocales.indexOf(defaultLocale));
 
         firstDayOfWeekSpinner.setAdapter(new ArrayAdapter<MaterialDayPicker.Weekday>(this, R.layout.spinner_text_view, allWeekdays));
 
         firstDayOfWeekSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                materialDayPicker.setFirstDayOfWeek(allWeekdays[position]);
+                materialDayPicker.setFirstDayOfWeek(allWeekdays.get(position));
             }
 
             @Override
@@ -130,16 +130,7 @@ public class JavaSampleActivity extends AppCompatActivity {
             }
         });
 
-        int weekdayPosition = 0;
-        MaterialDayPicker.Weekday defaultFirstDayOfWeek = MaterialDayPicker.Weekday.Companion.getFirstDayOfWeekFor(Locale.getDefault());
-
-        for (MaterialDayPicker.Weekday weekday : allWeekdays) {
-            if (weekday.equals(defaultFirstDayOfWeek)) {
-                firstDayOfWeekSpinner.setSelection(weekdayPosition);
-                break;
-            }
-            weekdayPosition++;
-        }
+        firstDayOfWeekSpinner.setSelection(allWeekdays.indexOf(defaultFirstDayOfWeek));
     }
 
     private void appendLog(String logMessage) {

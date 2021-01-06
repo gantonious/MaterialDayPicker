@@ -646,8 +646,7 @@ class MaterialDayPicker @JvmOverloads constructor(
              * Gets a list of [Weekday]s starting with the provided [firstDayOfWeek]
              *
              * @param firstDayOfWeek the first week day to use
-             * @return A list of [Weekday]s starting on the first day of
-             * the week for the given locale
+             * @return A list of [Weekday]s starting on the [firstDayOfWeek]
              */
             fun getOrderedDaysOfWeek(firstDayOfWeek: Weekday): List<Weekday> {
                 val daysOfTheWeekStartingOnSunday = allDays

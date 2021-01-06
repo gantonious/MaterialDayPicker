@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_sample.clearLogButton
 import kotlinx.android.synthetic.main.activity_sample.dayPicker
 import kotlinx.android.synthetic.main.activity_sample.enabledDaysSelector
 import kotlinx.android.synthetic.main.activity_sample.event_log
+import kotlinx.android.synthetic.main.activity_sample.first_day_of_week_spinner
 import kotlinx.android.synthetic.main.activity_sample.locale_spinner
 import kotlinx.android.synthetic.main.activity_sample.singleModeSwitch
 import java.util.Locale
@@ -58,13 +59,32 @@ class KotlinSampleActivity : AppCompatActivity() {
         }
 
         val allLocales = Locale.getAvailableLocales()
+        val defaultLocale = Locale.getDefault()
+
+        val allWeekdays = MaterialDayPicker.Weekday.values()
+        val defaultFirstDayOfWeek = MaterialDayPicker.Weekday.getFirstDayOfWeekFor(defaultLocale)
+
         locale_spinner.adapter = ArrayAdapter(this, R.layout.spinner_text_view, allLocales)
-        locale_spinner.setSelection(allLocales.indexOf(Locale.getDefault()))
+        locale_spinner.setSelection(allLocales.indexOf(defaultLocale))
 
         locale_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                materialDayPicker.locale = allLocales[position]
+                val selectedLocale = allLocales[position]
+                materialDayPicker.locale = selectedLocale
+
+                val firstDayOfWeekForSelectedLocale = MaterialDayPicker.Weekday.getFirstDayOfWeekFor(selectedLocale)
+                first_day_of_week_spinner.setSelection(allWeekdays.indexOf(firstDayOfWeekForSelectedLocale))
+            }
+        }
+
+        first_day_of_week_spinner.adapter = ArrayAdapter(this, R.layout.spinner_text_view, allWeekdays)
+        first_day_of_week_spinner.setSelection(allWeekdays.indexOf(defaultFirstDayOfWeek))
+
+        first_day_of_week_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                materialDayPicker.firstDayOfWeek = allWeekdays[position]
             }
         }
     }

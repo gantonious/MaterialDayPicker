@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/gantonious/MaterialDayPicker.svg?style=svg)](https://circleci.com/gh/gantonious/MaterialDayPicker) [![Download](https://api.bintray.com/packages/gantonious/maven/materialdaypicker/images/download.svg)](https://bintray.com/gantonious/maven/materialdaypicker/_latestVersion)
 
 
-Inspired by the day picker in the builtin Android clock app. 
+Inspired by the day picker in the builtin Android clock app.
 
 **Note:** I'm not actively working on new features for this library. I'm only addressing critical bugs. With that being said contributions for new features are more than welcome and I am available to review pull requests. See [contributing.md](https://github.com/gantonious/MaterialDayPicker/blob/dev/CONTRIBUTING.md) if you're interested in contributing.
 
@@ -17,7 +17,11 @@ Inspired by the day picker in the builtin Android clock app.
 - 🌎 Fully localized
 - 👻 Supports dark mode
 
-## What's New: Version 0.7.3 - Better Configuration + Bug fixes
+## What's New: Version 0.7.4 - Better Configuration + Bug fixes
+
+- You can now manually override the first day of the week shown in the picker by using the newly added `firstDayOfWeek` property
+
+### Changes from 0.7.3
 
 - Upgraded MaterialDayPicker to target API 30 and upgraded its AndroidX dependencies
 
@@ -41,7 +45,7 @@ Download the latest version by adding the following to your project's `build.gra
 
 ```groovy
 dependencies {
-    implementation 'ca.antonious:materialdaypicker:0.7.3'
+    implementation 'ca.antonious:materialdaypicker:0.7.4'
 }
 ```
 
